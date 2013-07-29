@@ -1,0 +1,21 @@
+{
+	"name": "idr0id/Papper",
+	"description": "Papper is PHP Mapper.",
+	"minimum-stability": "stable",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Vladimir Komissarov",
+			"homepage": "http://dr0id.ru"
+		}
+	],
+	"require" : {
+		"php": ">=5.3.3"
+	},
+	"autoload": {
+		"psr-0": {
+			"Papper": "src",
+            "Papper\\Tests": "tests"
+		}
+	}
+}

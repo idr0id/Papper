@@ -1,4 +1,4 @@
 Papper
 ======
 
-Papper — PHP Automapper
+Papper — PHP mapper.
