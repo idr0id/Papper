@@ -75,21 +75,13 @@ class Mapper
 		return $this->sourceReflector->getMethod($name)->invoke($source);
 	}
 
-	/**
-	 * @param $source
-	 * @param $name
-	 * @return mixed
-	 * @throws MappingException
-	 */
 	private function getSourceValue($source, $name)
 	{
 		$getter = 'get' . ucfirst($name);
 		if ($this->hasSourceMethod($getter)) {
-			$value = $this->getSourceMethodValue($source, $getter);
-			return $value;
+			return $this->getSourceMethodValue($source, $getter);
 		} else if ($this->hasSourceProperty($name)) {
-			$value = $this->getSourcePropertyValue($source, $name);
-			return $value;
+			return $this->getSourcePropertyValue($source, $name);
 		} else {
 			throw new MappingException(sprintf('Could not map property %s', $name));
 		}
