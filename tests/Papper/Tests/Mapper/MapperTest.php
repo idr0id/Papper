@@ -69,7 +69,7 @@ class MapperTest extends TestCaseBase
 			return new DestinationWithConstructor($source->someValue);
 		});
 		// act
-		$map->map(new Source()); /** @var DestinationWithSetter $destination */
+		$map->map(new Source());
 	}
 
 	private function createMap($sourceClass, $destinationClass)
