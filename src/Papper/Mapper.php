@@ -20,6 +20,10 @@ class Mapper
 	 * @var \Closure
 	 */
 	private $constructor;
+	/**
+	 * @var array
+	 */
+	private $ignoredProperties = array();
 
 	public function __construct($sourceClass, $destinationClass)
 	{
@@ -27,6 +31,13 @@ class Mapper
 		$this->destinationReflector = new ReflectionClass($destinationClass);
 	}
 
+	/**
+	 * Map
+	 *
+	 * @param object $source
+	 * @return object
+	 * @throws MappingException
+	 */
 	public function map($source)
 	{
 		if ($this->sourceReflector->getName() !== get_class($source)) {
@@ -36,6 +47,10 @@ class Mapper
 		$object = $this->construct($source);
 
 		foreach ($this->getDestinationSetters() as $name => $setter) {
+			if (in_array($name, $this->ignoredProperties)) {
+				continue;
+			}
+
 			$value = $this->getSourceValue($source, $name);
 
 			if ($setter instanceof ReflectionProperty) {
@@ -56,6 +71,16 @@ class Mapper
 	public function constructUsing(\Closure $constructor)
 	{
 		$this->constructor = $constructor;
+	}
+
+	/**
+	 * Make property ignored
+	 *
+	 * @param string $property
+	 */
+	public function ignore($property)
+	{
+		$this->ignoredProperties[] = $property;
 	}
 
 	private function construct($source)

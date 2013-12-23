@@ -55,7 +55,7 @@ class MapperTest extends TestCaseBase
 			return new DestinationWithConstructor($source->someValue);
 		});
 		// act
-		$destination = $map->map(new Source()); /** @var DestinationWithSetter $destination */
+		$destination = $map->map(new Source()); /** @var DestinationWithConstructor $destination */
 		// assert
 		$this->assertEquals('Some value', $destination->getSomeValue());
 	}
@@ -70,6 +70,26 @@ class MapperTest extends TestCaseBase
 		});
 		// act
 		$map->map(new Source());
+	}
+
+	public function testMapper_Should_IgnoreMappingToPropertyOrSetter()
+	{
+		// arrange
+		$map = $this->createMap(SourceEmpty::className(), Destination::className());
+		$map->ignore('someValue');
+		// act
+		$destination = $map->map(new SourceEmpty()); /** @var Destination $destination */
+		// assert
+		$this->assertNull($destination->someValue);
+	}
+
+	public function testMapper_Should_RaiseException_When_SourceHaveNotProperty()
+	{
+		$this->setExpectedException('Papper\MappingException');
+		// arrange
+		$map = $this->createMap(SourceEmpty::className(), Destination::className());
+		// act
+		$map->map(new SourceEmpty());
 	}
 
 	private function createMap($sourceClass, $destinationClass)
