@@ -8,12 +8,22 @@ use ReflectionProperty;
 
 class Mapper
 {
+	/**
+	 * @var \ReflectionClass
+	 */
 	private $sourceReflector;
+	/**
+	 * @var \ReflectionClass
+	 */
 	private $destinationReflector;
+	/**
+	 * @var \Closure
+	 */
+	private $constructor;
 
 	public function __construct($sourceClass, $destinationClass)
 	{
-		$this->sourceReflector = new ReflectionClass($sourceClass);;
+		$this->sourceReflector = new ReflectionClass($sourceClass);
 		$this->destinationReflector = new ReflectionClass($destinationClass);
 	}
 
@@ -23,7 +33,7 @@ class Mapper
 			throw new MappingException(sprintf('Source is not instance of class %s', $this->sourceReflector->getName()));
 		}
 
-		$object = $this->destinationReflector->newInstance();
+		$object = $this->construct($source);
 
 		foreach ($this->getDestinationSetters() as $name => $setter) {
 			$value = $this->getSourceValue($source, $name);
@@ -36,6 +46,28 @@ class Mapper
 		}
 
 		return $object;
+	}
+
+	/**
+	 * Construction map
+	 *
+	 * @param \Closure $constructor
+	 */
+	public function constructUsing(\Closure $constructor)
+	{
+		$this->constructor = $constructor;
+	}
+
+	private function construct($source)
+	{
+		if (!is_null($constructor = $this->constructor)) {
+			$object = $constructor($source);
+			if (!$this->destinationReflector->isInstance($object)) {
+				throw new ConstructedUnexpectedDestinationClass(get_class($object), $this->destinationReflector->getName());
+			}
+			return $object;
+		}
+		return $this->destinationReflector->newInstance();
 	}
 
 	/**

@@ -47,6 +47,31 @@ class MapperTest extends TestCaseBase
 		$this->assertEquals('Some value', $destination->getSomeValue());
 	}
 
+	public function testMapper_Should_ConstructUsingClosureFactory()
+	{
+		// arrange
+		$map = $this->createMap(Source::className(), DestinationWithConstructor::className());
+		$map->constructUsing(function (Source $source){
+			return new DestinationWithConstructor($source->someValue);
+		});
+		// act
+		$destination = $map->map(new Source()); /** @var DestinationWithSetter $destination */
+		// assert
+		$this->assertEquals('Some value', $destination->getSomeValue());
+	}
+
+	public function testMapper_Should_RaiseException_When_ConstructNotExpectedDestinationClass()
+	{
+		$this->setExpectedException('Papper\ConstructedUnexpectedDestinationClass');
+		// arrange
+		$map = $this->createMap(Source::className(), Destination::className());
+		$map->constructUsing(function (Source $source){
+			return new DestinationWithConstructor($source->someValue);
+		});
+		// act
+		$map->map(new Source()); /** @var DestinationWithSetter $destination */
+	}
+
 	private function createMap($sourceClass, $destinationClass)
 	{
 		return new Mapper($sourceClass, $destinationClass);
