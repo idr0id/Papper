@@ -47,7 +47,7 @@ class MapperTest extends TestCaseBase
 		$this->assertEquals('Some value', $destination->getSomeValue());
 	}
 
-	public function testMapper_Should_ConstructUsingClosureFactory()
+	public function testMapper_Should_ConstructUsingClosure()
 	{
 		// arrange
 		$map = $this->createMap(Source::className(), DestinationWithConstructor::className());
