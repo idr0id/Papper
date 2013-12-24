@@ -17,6 +17,6 @@ class Papper
 	private static function instance()
 	{
 		static $instance;
-		return $instance ?: $instance = new PapperImpl();
+		return $instance ?: $instance = new Context();
 	}
 }

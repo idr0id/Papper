@@ -2,7 +2,7 @@
 
 namespace Papper;
 
-class PapperImpl
+class Context
 {
 	/**
 	 * @var Mapper[]

@@ -1,6 +1,6 @@
 <?php
 
-namespace Papper\Tests\PapperImpl;
+namespace Papper\Tests\Context;
 
 use Papper\Tests\ObjectBase;
 

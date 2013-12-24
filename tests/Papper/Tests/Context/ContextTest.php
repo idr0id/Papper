@@ -1,16 +1,16 @@
 <?php
 
-namespace Papper\Tests\PapperImpl;
+namespace Papper\Tests\Context;
 
-use Papper\PapperImpl;
+use Papper\Context;
 use Papper\Tests\TestCaseBase;
 
-class PapperImplTest extends TestCaseBase
+class ContextTest extends TestCaseBase
 {
 	public function testCreateMap_Success()
 	{
 		// arrange
-		$papper = $this->createPapperImpl();
+		$papper = $this->createContext();
 		// act
 		$map = $papper->createMap(Destination::className(), Source::className());
 		// assert
@@ -21,7 +21,7 @@ class PapperImplTest extends TestCaseBase
 	{
 		$this->setExpectedException('Papper\ClassNotFoundException');
 		// arrange
-		$papper = $this->createPapperImpl();
+		$papper = $this->createContext();
 		// act
 		$papper->createMap('Papper\Tests\PapperImpl\ClassNotFound', Destination::className());
 	}
@@ -30,7 +30,7 @@ class PapperImplTest extends TestCaseBase
 	{
 		$this->setExpectedException('Papper\ClassNotFoundException');
 		// arrange
-		$papper = $this->createPapperImpl();
+		$papper = $this->createContext();
 		// act
 		$papper->createMap(Destination::className(), 'Papper\Tests\PapperImpl\ClassNotFound');
 	}
@@ -39,7 +39,7 @@ class PapperImplTest extends TestCaseBase
 	{
 		$this->setExpectedException('Papper\MapperAlreadyCreatedException');
 		// arrange
-		$papper = $this->createPapperImpl();
+		$papper = $this->createContext();
 		// act
 		$papper->createMap(Source::className(), Destination::className());
 		$papper->createMap(Source::className(), Destination::className());
@@ -48,7 +48,7 @@ class PapperImplTest extends TestCaseBase
 	public function testMap_With_Mapper_Success()
 	{
 		// arrange
-		$papper = $this->createPapperImpl();
+		$papper = $this->createContext();
 		$papper->createMap(Source::className(), Destination::className());
 		// act
 		$destination = $papper->map(Source::className(), Destination::className(), new Source());
@@ -60,13 +60,13 @@ class PapperImplTest extends TestCaseBase
 	{
 		$this->setExpectedException('Papper\MapperNotFoundException');
 		// arrange
-		$papper = $this->createPapperImpl();
+		$papper = $this->createContext();
 		// act
 		$papper->map(Source::className(), Destination::className(), new Source());
 	}
 
-	private function createPapperImpl()
+	private function createContext()
 	{
-		return new PapperImpl();
+		return new Context();
 	}
 }
