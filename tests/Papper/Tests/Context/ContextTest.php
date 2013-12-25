@@ -37,7 +37,7 @@ class ContextTest extends TestCaseBase
 
 	public function testCreateMap_For_CreatedMapper_RaiseException()
 	{
-		$this->setExpectedException('Papper\MapperAlreadyCreatedException');
+		$this->setExpectedException('Papper\ContextException');
 		// arrange
 		$papper = $this->createContext();
 		// act
@@ -58,7 +58,7 @@ class ContextTest extends TestCaseBase
 
 	public function testMap_Without_Mapper_RaiseException()
 	{
-		$this->setExpectedException('Papper\MapperNotFoundException');
+		$this->setExpectedException('Papper\ContextException');
 		// arrange
 		$papper = $this->createContext();
 		// act

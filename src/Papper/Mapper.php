@@ -88,7 +88,9 @@ class Mapper
 		if (!is_null($constructor = $this->constructor)) {
 			$object = $constructor($source);
 			if (!$this->destinationReflector->isInstance($object)) {
-				throw new ConstructedUnexpectedDestinationClass(get_class($object), $this->destinationReflector->getName());
+				throw new MappingException(sprintf(
+					'Closure constructed class %s, but expected %s', get_class($object), $this->destinationReflector->getName()
+				));
 			}
 			return $object;
 		}

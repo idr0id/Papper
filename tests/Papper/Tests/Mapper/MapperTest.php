@@ -62,7 +62,7 @@ class MapperTest extends TestCaseBase
 
 	public function testMapper_Should_RaiseException_When_ConstructNotExpectedDestinationClass()
 	{
-		$this->setExpectedException('Papper\ConstructedUnexpectedDestinationClass');
+		$this->setExpectedException('Papper\MappingException');
 		// arrange
 		$map = $this->createMap(Source::className(), Destination::className());
 		$map->constructUsing(function (Source $source){

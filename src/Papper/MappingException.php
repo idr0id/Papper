@@ -2,6 +2,6 @@
 
 namespace Papper;
 
-class MappingException extends \Exception
+class MappingException extends PapperExceptionBase
 {
 }

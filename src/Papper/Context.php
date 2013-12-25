@@ -20,9 +20,7 @@ class Context
 		$this->assertClassExists($destinationClass);
 		$this->assertMapperNotCreated($sourceClass, $destinationClass);
 
-		$mapper = new Mapper($sourceClass, $destinationClass);
-		$this->mappers[$sourceClass][$destinationClass] = $mapper;
-		return $mapper;
+		return $this->mappers[$sourceClass][$destinationClass] = new Mapper($sourceClass, $destinationClass);
 	}
 
 	public function map($sourceType, $destinationType, $source)
@@ -37,7 +35,7 @@ class Context
 	 */
 	private function get($sourceType, $destinationType)
 	{
-		$this->assertMapperShouldExists($sourceType, $destinationType);
+		$this->assertMapperCreated($sourceType, $destinationType);
 		return $this->mappers[$sourceType][$destinationType];
 	}
 
@@ -48,17 +46,17 @@ class Context
 		}
 	}
 
-	private function assertMapperNotCreated($sourceClass, $destinationClass)
+	private function assertMapperCreated($sourceClass, $destinationClass)
 	{
-		if (isset($this->mappers[$sourceClass][$destinationClass])) {
-			throw new MapperAlreadyCreatedException($sourceClass, $destinationClass);
+		if (!isset($this->mappers[$sourceClass][$destinationClass])) {
+			throw new ContextException(sprintf('Mapper <%s, %s> not created in context', $sourceClass, $destinationClass));
 		}
 	}
 
-	private function assertMapperShouldExists($sourceClass, $destinationClass)
+	private function assertMapperNotCreated($sourceClass, $destinationClass)
 	{
-		if (!isset($this->mappers[$sourceClass][$destinationClass])) {
-			throw new MapperNotFoundException($sourceClass, $destinationClass);
+		if (isset($this->mappers[$sourceClass][$destinationClass])) {
+			throw new ContextException(sprintf('Mapper <%s, %s> already created', $sourceClass, $destinationClass));
 		}
 	}
 }

@@ -2,9 +2,7 @@
 
 namespace Papper;
 
-use Exception;
-
-class ClassNotFoundException extends \Exception
+class ClassNotFoundException extends ContextException
 {
 	public function __construct($class)
 	{
