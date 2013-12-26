@@ -2,10 +2,6 @@
 
 namespace Papper;
 
-use ReflectionClass;
-use ReflectionMethod;
-use ReflectionProperty;
-
 class Mapper
 {
 	/**
