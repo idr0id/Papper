@@ -36,9 +36,8 @@ class Mapper
 	 */
 	public function map($source)
 	{
-		if (!$this->sourceReflector->isInstance($source)) {
-			throw new MappingException(sprintf('Source is not instance of class %s', $this->sourceReflector->getName()));
-		}
+		$this->assertSourceIsObject($source);
+		$this->assertSourceObjectIsInstanceOfSourceClass($source);
 
 		$object = $this->construct($source);
 
@@ -79,13 +78,48 @@ class Mapper
 	{
 		if (!is_null($constructor = $this->constructor)) {
 			$object = $constructor($source);
-			if (!$this->destinationReflector->isInstance($object)) {
-				throw new MappingException(sprintf(
-					'Closure constructed class %s, but expected %s', get_class($object), $this->destinationReflector->getName()
-				));
-			}
+			$this->assertConstructedIsObject($object);
+			$this->assertConstructedObjectIsInstanceOfDestinationClass($object);
 			return $object;
 		}
 		return $this->destinationReflector->create();
 	}
+
+	private function assertSourceIsObject($source)
+	{
+		if (!is_object($source)) {
+			throw new MappingException(sprintf(
+				'Source type is %s, but expected an object of class %s', gettype($source), $this->sourceReflector->getName()
+			));
+		}
+	}
+
+	private function assertSourceObjectIsInstanceOfSourceClass($source)
+	{
+		if (!$this->sourceReflector->isInstance($source)) {
+			throw new MappingException(sprintf(
+				'Source object is instance of class %s, but expected an object of class %s', get_class($source), $this->sourceReflector->getName()
+			));
+		}
+	}
+
+	private function assertConstructedIsObject($constructed)
+	{
+		if (!is_object($constructed)) {
+			throw new MappingException(sprintf(
+				'Constructed type is %s, but expected an object of class %s', get_class($constructed), $this->destinationReflector->getName()
+			));
+		}
+	}
+
+	private function assertConstructedObjectIsInstanceOfDestinationClass($constructed)
+	{
+		if (!$this->destinationReflector->isInstance($constructed)) {
+			throw new MappingException(sprintf(
+				'Constructed object is instance of class %s, but expected an object of class %s', get_class($constructed), $this->destinationReflector->getName()
+			));
+		}
+	}
+
+
 }
