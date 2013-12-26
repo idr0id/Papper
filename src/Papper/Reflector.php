@@ -8,11 +8,11 @@ class Reflector
 {
 	private $reflector;
 	/**
-	 * @var ReflectorSetter[]
+	 * @var ReflectorMember[]
 	 */
 	private $setters = array();
 	/**
-	 * @var ReflectorGetter[]
+	 * @var ReflectorMember[]
 	 */
 	private $getters = array();
 
@@ -72,16 +72,16 @@ class Reflector
 	{
 		// collect properties
 		foreach ($this->reflector->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
-			$this->setters[$property->getName()] = new ReflectorSetter($property);
-			$this->getters[$property->getName()] = new ReflectorGetter($property);
+			$this->getters[$property->getName()] =
+			$this->setters[$property->getName()] = new ReflectorMember($property);
 		}
 		// collect methods
 		foreach ($this->reflector->getMethods() as $method) {
 			if (strpos($method->getName(), 'get') === 0) {
-				$this->getters[lcfirst(substr($method->getName(), 3))] = new ReflectorGetter($method);
+				$this->getters[lcfirst(substr($method->getName(), 3))] = new ReflectorMember($method);
 			}
 			else if (strpos($method->getName(), 'set') === 0) {
-				$this->setters[lcfirst(substr($method->getName(), 3))] = new ReflectorSetter($method);
+				$this->setters[lcfirst(substr($method->getName(), 3))] = new ReflectorMember($method);
 			}
 		}
 	}

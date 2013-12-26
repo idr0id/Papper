@@ -49,8 +49,7 @@ class Mapper
 			if (!$this->sourceReflector->hasGetter($name)) {
 				throw new MappingException(sprintf('Could not map property %s', $name));
 			}
-			$getter = $this->sourceReflector->getGetter($name);
-			$setter->set($object, $getter->getValue($source));
+			$setter->setValue($object, $this->sourceReflector->getGetter($name)->getValue($source));
 		}
 
 		return $object;
