@@ -2,6 +2,8 @@
 
 namespace Papper;
 
+use ReflectionClass;
+
 class Context
 {
 	/**
@@ -9,13 +11,21 @@ class Context
 	 */
 	private $mappers = array();
 
+	/**
+	 * @var Reflector[]
+	 */
+	private $reflectors = array();
+
 	public function createMap($sourceClass, $destinationClass)
 	{
 		$this->assertClassExists($sourceClass);
 		$this->assertClassExists($destinationClass);
 		$this->assertMapperNotCreated($sourceClass, $destinationClass);
 
-		return $this->mappers[$sourceClass][$destinationClass] = new Mapper($sourceClass, $destinationClass);
+		return $this->mappers[$sourceClass][$destinationClass] = new Mapper(
+			$this->findOrCreateReflector($sourceClass),
+			$this->findOrCreateReflector($destinationClass)
+		);
 	}
 
 	public function map($sourceType, $destinationType, $source)
@@ -33,6 +43,18 @@ class Context
 		$this->assertMapperCreated($sourceClass, $destinationClass);
 
 		return $this->mappers[$sourceClass][$destinationClass];
+	}
+
+	/**
+	 * @param string $class
+	 * @return Reflector
+	 */
+	private function findOrCreateReflector($class)
+	{
+		if (!isset($this->reflectors[$class])) {
+			$this->reflectors[$class] = new Reflector(new ReflectionClass($class));
+		}
+		return $this->reflectors[$class];
 	}
 
 	private function has($sourceClass, $destinationClass)

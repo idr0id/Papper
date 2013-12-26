@@ -3,7 +3,9 @@
 namespace Papper\Tests\Mapper;
 
 use Papper\Mapper;
+use Papper\Reflector;
 use Papper\Tests\TestCaseBase;
+use ReflectionClass;
 
 class MapperTest extends TestCaseBase
 {
@@ -94,6 +96,11 @@ class MapperTest extends TestCaseBase
 
 	private function createMap($sourceClass, $destinationClass)
 	{
-		return new Mapper($sourceClass, $destinationClass);
+		return new Mapper($this->createReflector($sourceClass), $this->createReflector($destinationClass));
+	}
+
+	private function createReflector($class)
+	{
+		return new Reflector(new ReflectionClass($class));
 	}
 }

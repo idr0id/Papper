@@ -2,18 +2,14 @@
 
 namespace Papper;
 
-use ReflectionClass;
-use ReflectionMethod;
-use ReflectionProperty;
-
 class Mapper
 {
 	/**
-	 * @var \ReflectionClass
+	 * @var Reflector
 	 */
 	private $sourceReflector;
 	/**
-	 * @var \ReflectionClass
+	 * @var Reflector
 	 */
 	private $destinationReflector;
 	/**
@@ -23,12 +19,12 @@ class Mapper
 	/**
 	 * @var array
 	 */
-	private $ignoredProperties = array();
+	private $ignoredSetters = array();
 
-	public function __construct($sourceClass, $destinationClass)
+	public function __construct(Reflector $sourceReflector, Reflector $destinationReflector)
 	{
-		$this->sourceReflector = new ReflectionClass($sourceClass);
-		$this->destinationReflector = new ReflectionClass($destinationClass);
+		$this->sourceReflector = $sourceReflector;
+		$this->destinationReflector = $destinationReflector;
 	}
 
 	/**
@@ -40,24 +36,20 @@ class Mapper
 	 */
 	public function map($source)
 	{
-		if ($this->sourceReflector->getName() !== get_class($source)) {
+		if (!$this->sourceReflector->isInstance($source)) {
 			throw new MappingException(sprintf('Source is not instance of class %s', $this->sourceReflector->getName()));
 		}
 
 		$object = $this->construct($source);
 
-		foreach ($this->getDestinationSetters() as $name => $setter) {
-			if (in_array($name, $this->ignoredProperties)) {
+		foreach ($this->destinationReflector->getSetters() as $name => $setter) {
+			if (in_array($name, $this->ignoredSetters)) {
 				continue;
 			}
-
-			$value = $this->getSourceValue($source, $name);
-
-			if ($setter instanceof ReflectionProperty) {
-				$setter->setValue($object, $value);
-			} else {
-				$setter->invokeArgs($object, array($value));
+			if (!$this->sourceReflector->hasGetter($name)) {
+				throw new MappingException(sprintf('Could not map property %s', $name));
 			}
+			$setter->setValue($object, $this->sourceReflector->getGetter($name)->getValue($source));
 		}
 
 		return $object;
@@ -76,11 +68,11 @@ class Mapper
 	/**
 	 * Make property ignored
 	 *
-	 * @param string $property
+	 * @param string $setter
 	 */
-	public function ignore($property)
+	public function ignore($setter)
 	{
-		$this->ignoredProperties[] = $property;
+		$this->ignoredSetters[] = $setter;
 	}
 
 	private function construct($source)
@@ -94,55 +86,6 @@ class Mapper
 			}
 			return $object;
 		}
-		return $this->destinationReflector->newInstance();
-	}
-
-	/**
-	 * @return ReflectionProperty[]|ReflectionMethod[]
-	 */
-	private function getDestinationSetters()
-	{
-		$setters = array();
-		foreach ($this->destinationReflector->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
-			$setters[$property->getName()] = $property;
-		}
-		foreach ($this->destinationReflector->getMethods() as $method) {
-			if (strpos($method->getName(), 'set') === 0) {
-				$setters[lcfirst(substr($method->getName(), 3))] = $method;
-			}
-		}
-		return $setters;
-	}
-
-	private function hasSourceProperty($name)
-	{
-		return $this->sourceReflector->hasProperty($name) && $this->sourceReflector->getProperty($name)->isPublic();
-	}
-
-	private function getSourcePropertyValue($source, $name)
-	{
-		return $this->sourceReflector->getProperty($name)->getValue($source);
-	}
-
-	private function hasSourceMethod($name)
-	{
-		return $this->sourceReflector->hasMethod($name) && $this->sourceReflector->getMethod($name)->isPublic();
-	}
-
-	private function getSourceMethodValue($source, $name)
-	{
-		return $this->sourceReflector->getMethod($name)->invoke($source);
-	}
-
-	private function getSourceValue($source, $name)
-	{
-		$getter = 'get' . ucfirst($name);
-		if ($this->hasSourceMethod($getter)) {
-			return $this->getSourceMethodValue($source, $getter);
-		} else if ($this->hasSourceProperty($name)) {
-			return $this->getSourcePropertyValue($source, $name);
-		} else {
-			throw new MappingException(sprintf('Could not map property %s', $name));
-		}
+		return $this->destinationReflector->create();
 	}
 }
