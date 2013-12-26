@@ -36,10 +36,6 @@ class ReflectorMember
 		}
 	}
 
-	/**
-	 * @param mixed $reflector
-	 * @throws ReflectorException
-	 */
 	private function assertReflectorClass($reflector)
 	{
 		if (!$reflector instanceof ReflectionProperty && !$reflector instanceof ReflectionMethod) {
