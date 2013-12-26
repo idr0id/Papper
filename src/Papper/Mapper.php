@@ -23,7 +23,7 @@ class Mapper
 	/**
 	 * @var array
 	 */
-	private $ignoredProperties = array();
+	private $ignoredSetters = array();
 
 	public function __construct(Reflector $sourceReflector, Reflector $destinationReflector)
 	{
@@ -47,7 +47,7 @@ class Mapper
 		$object = $this->construct($source);
 
 		foreach ($this->destinationReflector->getSetters() as $name => $setter) {
-			if (in_array($name, $this->ignoredProperties)) {
+			if (in_array($name, $this->ignoredSetters)) {
 				continue;
 			}
 			if (!$this->sourceReflector->hasGetter($name)) {
@@ -73,11 +73,11 @@ class Mapper
 	/**
 	 * Make property ignored
 	 *
-	 * @param string $property
+	 * @param string $setter
 	 */
-	public function ignore($property)
+	public function ignore($setter)
 	{
-		$this->ignoredProperties[] = $property;
+		$this->ignoredSetters[] = $setter;
 	}
 
 	private function construct($source)
