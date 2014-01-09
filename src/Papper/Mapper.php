@@ -58,20 +58,24 @@ class Mapper
 	 * Construction map
 	 *
 	 * @param \Closure $constructor
+	 * @return $this
 	 */
 	public function constructUsing(\Closure $constructor)
 	{
 		$this->constructor = $constructor;
+		return $this;
 	}
 
 	/**
 	 * Make property ignored
 	 *
 	 * @param string $setter
+	 * @return $this
 	 */
 	public function ignore($setter)
 	{
 		$this->ignoredSetters[] = $setter;
+		return $this;
 	}
 
 	private function construct($source)
