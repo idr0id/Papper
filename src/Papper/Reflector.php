@@ -10,11 +10,11 @@ class Reflector
 	/**
 	 * @var ReflectorMember[]
 	 */
-	private $setters = array();
+	private $publicSetters = array();
 	/**
 	 * @var ReflectorMember[]
 	 */
-	private $getters = array();
+	private $publicGetters = array();
 
 	public function __construct(\ReflectionClass $reflector)
 	{
@@ -37,51 +37,35 @@ class Reflector
 		return $this->reflector->newInstance();
 	}
 
-	public function hasGetter($name)
+	public function hasPublicGetter($name)
 	{
-		return isset($this->getters[$name]);
+		return isset($this->publicGetters[$name]);
 	}
 
-	public function getGetter($name)
+	public function getPublicGetter($name)
 	{
-		return $this->getters[$name];
+		return $this->publicGetters[$name];
 	}
 
-	public function getSetters()
+	public function getPublicSetters()
 	{
-		return $this->setters;
-	}
-
-	public function getGetters()
-	{
-		return $this->getters;
-
-	}
-
-	public function hasProperty($name)
-	{
-		return $this->reflector->hasProperty($name) && $this->reflector->getProperty($name)->isPublic();
-	}
-
-	public function hasMethod($name)
-	{
-		return $this->reflector->hasMethod($name) && $this->reflector->getMethod($name)->isPublic();
+		return $this->publicSetters;
 	}
 
 	private function disassemble()
 	{
 		// collect properties
 		foreach ($this->reflector->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
-			$this->getters[$property->getName()] =
-			$this->setters[$property->getName()] = new ReflectorMember($property);
+			$this->publicGetters[$property->getName()] =
+			$this->publicSetters[$property->getName()] = new ReflectorMember($property);
 		}
 		// collect methods
 		foreach ($this->reflector->getMethods() as $method) {
 			if (strpos($method->getName(), 'get') === 0) {
-				$this->getters[lcfirst(substr($method->getName(), 3))] = new ReflectorMember($method);
+				$this->publicGetters[lcfirst(substr($method->getName(), 3))] = new ReflectorMember($method);
 			}
 			else if (strpos($method->getName(), 'set') === 0) {
-				$this->setters[lcfirst(substr($method->getName(), 3))] = new ReflectorMember($method);
+				$this->publicSetters[lcfirst(substr($method->getName(), 3))] = new ReflectorMember($method);
 			}
 		}
 	}

@@ -41,14 +41,14 @@ class Mapper
 
 		$object = $this->construct($source);
 
-		foreach ($this->destinationReflector->getSetters() as $name => $setter) {
+		foreach ($this->destinationReflector->getPublicSetters() as $name => $setter) {
 			if (in_array($name, $this->ignoredSetters)) {
 				continue;
 			}
-			if (!$this->sourceReflector->hasGetter($name)) {
+			if (!$this->sourceReflector->hasPublicGetter($name)) {
 				throw new MappingException(sprintf('Could not map property %s', $name));
 			}
-			$setter->setValue($object, $this->sourceReflector->getGetter($name)->getValue($source));
+			$setter->setValue($object, $this->sourceReflector->getPublicGetter($name)->getValue($source));
 		}
 
 		return $object;
