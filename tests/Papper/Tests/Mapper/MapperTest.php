@@ -5,7 +5,6 @@ namespace Papper\Tests\Mapper;
 use Papper\Mapper;
 use Papper\Reflector;
 use Papper\Tests\TestCaseBase;
-use ReflectionClass;
 
 class MapperTest extends TestCaseBase
 {
@@ -101,6 +100,6 @@ class MapperTest extends TestCaseBase
 
 	private function createReflector($class)
 	{
-		return new Reflector(new ReflectionClass($class));
+		return new Reflector(new \ReflectionClass($class));
 	}
 }

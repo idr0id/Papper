@@ -2,10 +2,11 @@
 
 namespace Papper;
 
-use ReflectionProperty;
-
 class Reflector
 {
+	/**
+	 * @var \ReflectionClass
+	 */
 	private $reflector;
 	/**
 	 * @var ReflectorMember[]
@@ -55,7 +56,7 @@ class Reflector
 	private function disassemble()
 	{
 		// collect properties
-		foreach ($this->reflector->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
+		foreach ($this->reflector->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
 			$this->publicGetters[$property->getName()] =
 			$this->publicSetters[$property->getName()] = new ReflectorMember($property);
 		}

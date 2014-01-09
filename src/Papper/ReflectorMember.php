@@ -2,13 +2,10 @@
 
 namespace Papper;
 
-use ReflectionMethod;
-use ReflectionProperty;
-
 class ReflectorMember
 {
 	/**
-	 * @var ReflectionProperty|ReflectionMethod
+	 * @var \ReflectionProperty|\ReflectionMethod
 	 */
 	protected $reflector;
 
@@ -29,7 +26,7 @@ class ReflectorMember
 
 	public function setValue($object, $value)
 	{
-		if ($this->reflector instanceof ReflectionProperty) {
+		if ($this->reflector instanceof \ReflectionProperty) {
 			$this->reflector->setValue($object, $value);
 		} else {
 			$this->reflector->invokeArgs($object, array($value));
@@ -38,7 +35,7 @@ class ReflectorMember
 
 	private function assertReflectorClass($reflector)
 	{
-		if (!$reflector instanceof ReflectionProperty && !$reflector instanceof ReflectionMethod) {
+		if (!$reflector instanceof \ReflectionProperty && !$reflector instanceof \ReflectionMethod) {
 			throw new ReflectorException(sprintf("Reflector must be instance of ReflectionProperty or ReflectionMethod, not %s", get_class($reflector)));
 		}
 	}

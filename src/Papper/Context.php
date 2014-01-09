@@ -2,8 +2,6 @@
 
 namespace Papper;
 
-use ReflectionClass;
-
 class Context
 {
 	/**
@@ -52,7 +50,7 @@ class Context
 	private function findOrCreateReflector($class)
 	{
 		if (!isset($this->reflectors[$class])) {
-			$this->reflectors[$class] = new Reflector(new ReflectionClass($class));
+			$this->reflectors[$class] = new Reflector(new \ReflectionClass($class));
 		}
 		return $this->reflectors[$class];
 	}
