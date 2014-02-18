@@ -10,9 +10,9 @@ class ContextTest extends TestCaseBase
 	public function testCreateMap_Success()
 	{
 		// arrange
-		$papper = $this->createContext();
+		$context = new Context();
 		// act
-		$map = $papper->createMap(Destination::className(), Source::className());
+		$map = $context->createMap(Destination::className(), Source::className());
 		// assert
 		$this->assertInstanceOf('Papper\Mapper', $map);
 	}
@@ -21,37 +21,37 @@ class ContextTest extends TestCaseBase
 	{
 		$this->setExpectedException('Papper\ClassNotFoundException');
 		// arrange
-		$papper = $this->createContext();
+		$context = new Context();
 		// act
-		$papper->createMap('Papper\Tests\PapperImpl\ClassNotFound', Destination::className());
+		$context->createMap('Papper\Tests\PapperImpl\ClassNotFound', Destination::className());
 	}
 
 	public function testCreateMap_With_IncorrectDestinationClass_RaiseException()
 	{
 		$this->setExpectedException('Papper\ClassNotFoundException');
 		// arrange
-		$papper = $this->createContext();
+		$context = new Context();
 		// act
-		$papper->createMap(Destination::className(), 'Papper\Tests\PapperImpl\ClassNotFound');
+		$context->createMap(Destination::className(), 'Papper\Tests\PapperImpl\ClassNotFound');
 	}
 
 	public function testCreateMap_For_CreatedMapper_RaiseException()
 	{
 		$this->setExpectedException('Papper\ContextException');
 		// arrange
-		$papper = $this->createContext();
+		$context = new Context();
 		// act
-		$papper->createMap(Source::className(), Destination::className());
-		$papper->createMap(Source::className(), Destination::className());
+		$context->createMap(Source::className(), Destination::className());
+		$context->createMap(Source::className(), Destination::className());
 	}
 
 	public function testMap_With_Mapper_Success()
 	{
 		// arrange
-		$papper = $this->createContext();
-		$papper->createMap(Source::className(), Destination::className());
+		$context = new Context();
+		$context->createMap(Source::className(), Destination::className());
 		// act
-		$destination = $papper->map(Source::className(), Destination::className(), new Source());
+		$destination = $context->map(Source::className(), Destination::className(), new Source());
 		// assert
 		$this->assertInstanceOf(Destination::className(), $destination);
 	}
@@ -60,13 +60,8 @@ class ContextTest extends TestCaseBase
 	{
 		$this->setExpectedException('Papper\ContextException');
 		// arrange
-		$papper = $this->createContext();
+		$context = new Context();
 		// act
-		$papper->map(Source::className(), Destination::className(), new Source());
-	}
-
-	private function createContext()
-	{
-		return new Context();
+		$context->map(Source::className(), Destination::className(), new Source());
 	}
 }
