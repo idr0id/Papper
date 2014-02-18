@@ -28,7 +28,13 @@ class Context
 
 	public function map($sourceType, $destinationType, $source)
 	{
-		return $this->get($sourceType, $destinationType)->map($source);
+		$mapper = $this->get($sourceType, $destinationType);
+
+		return is_array($source)
+			? array_map(function($source) use ($mapper) {
+					return $mapper->map($source);
+				}, $source)
+			: $mapper->map($source);
 	}
 
 	/**
@@ -43,6 +49,11 @@ class Context
 		return $this->mappers[$sourceClass][$destinationClass];
 	}
 
+	private function has($sourceClass, $destinationClass)
+	{
+		return isset($this->mappers[$sourceClass][$destinationClass]);
+	}
+
 	/**
 	 * @param string $class
 	 * @return Reflector
@@ -53,11 +64,6 @@ class Context
 			$this->reflectors[$class] = new Reflector(new \ReflectionClass($class));
 		}
 		return $this->reflectors[$class];
-	}
-
-	private function has($sourceClass, $destinationClass)
-	{
-		return isset($this->mappers[$sourceClass][$destinationClass]);
 	}
 
 	private function assertClassExists($class)

@@ -64,4 +64,24 @@ class ContextTest extends TestCaseBase
 		// act
 		$context->map(Source::className(), Destination::className(), new Source());
 	}
+
+	public function testMap_ArrayToArray()
+	{
+		// arrange
+		$context = new Context();
+		$context->createMap(Source::className(), Destination::className());
+
+		// act
+		$destinations = $context->map(Source::className(), Destination::className(), array(
+			new Source('Test data 1'),
+			new Source('Test data 2'),
+			new Source('Test data 3'),
+			new Source('Test data 4'),
+			new Source('Test data 5'),
+		));
+
+		// assert
+		$this->assertCount(5, $destinations);
+		$this->assertContainsOnlyInstancesOf(Destination::className(), $destinations);
+	}
 }

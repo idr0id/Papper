@@ -6,4 +6,5 @@ use Papper\Tests\ObjectBase;
 
 class Destination extends ObjectBase
 {
+	public $data;
 }
