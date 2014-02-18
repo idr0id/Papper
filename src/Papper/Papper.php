@@ -6,17 +6,17 @@ class Papper
 {
 	public static function createMap($sourceClass, $destinationClass)
 	{
-		return static::instance()->createMap($sourceClass, $destinationClass);
+		return static::context()->createMap($sourceClass, $destinationClass);
 	}
 
 	public static function map($sourceClass, $destinationClass, $source)
 	{
-		return static::instance()->map($sourceClass, $destinationClass, $source);
+		return static::context()->map($sourceClass, $destinationClass, $source);
 	}
 
-	private static function instance()
+	private static function context()
 	{
-		static $instance;
-		return $instance ?: $instance = new Context();
+		static $context;
+		return $context ?: $context = new Context();
 	}
 }
