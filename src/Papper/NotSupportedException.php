@@ -3,10 +3,10 @@
 namespace Papper;
 
 /**
- * Class MappingException
+ * Class NotSupportedException
  *
  * @author Vladimir Komissarov <dr0id@dr0id.ru>
  */
-class MappingException extends PapperException
+class NotSupportedException extends PapperException
 {
 }

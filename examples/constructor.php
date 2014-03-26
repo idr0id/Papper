@@ -44,12 +44,13 @@ class UserDTO
 	}
 }
 
-/** @var UserDTO $userDTO */
-$userDTO = Papper::createMap('Papper\Examples\Constructor\User', 'Papper\Examples\Constructor\UserDTO')
+Papper::createMap('Papper\Examples\Constructor\User', 'Papper\Examples\Constructor\UserDTO')
 	->constructUsing(function (User $user) {
 		return new UserDTO($user->name);
-	})
-	->map(new User('John Smith', 32));
+	});
+
+/** @var UserDTO $userDTO */
+$userDTO = Papper::map(new User('John Smith', 32), 'Papper\Examples\Constructor\UserDTO');
 
 echo "Name: ", $userDTO->getName(), PHP_EOL;
 echo "Age: ", $userDTO->getAge(), PHP_EOL;

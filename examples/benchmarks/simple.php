@@ -1,10 +1,10 @@
 <?php
 
-namespace Papper\Examples\Simple;
+namespace Papper\Examples\Benchmarks\Simple;
 
 use Papper\Papper;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 class User
 {
@@ -39,8 +39,9 @@ class UserDTO
 	}
 }
 
-/** @var UserDTO $userDTO */
-$userDTO = Papper::map(new User('John Smith', 32), 'Papper\Examples\Simple\UserDTO');
+$start = microtime(true);
+$usersDTOs = Papper::map(new User('John Smith', 32), 'Papper\Examples\Benchmarks\Simple\UserDTO');
+$end = microtime(true);
 
-echo "Name: ", $userDTO->name, PHP_EOL;
-echo "Age: ", $userDTO->getAge(), PHP_EOL;
+echo "Mapping time for object to object (sec): ", $end - $start, PHP_EOL;
+

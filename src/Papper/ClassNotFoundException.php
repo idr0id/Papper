@@ -2,10 +2,6 @@
 
 namespace Papper;
 
-class ClassNotFoundException extends ContextException
+class ClassNotFoundException extends PapperException
 {
-	public function __construct($class)
-	{
-		parent::__construct(sprintf('Class %s not found', $class));
-	}
 }
