@@ -15,7 +15,7 @@ class ReflectionMethodGetter implements MemberGetterInterface
 
 	public function getName()
 	{
-		return $this->reflector->getName() . '()';
+		return $this->reflector->name . '()';
 	}
 
 	public function getValue($object)
