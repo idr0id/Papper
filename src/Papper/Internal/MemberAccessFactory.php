@@ -2,6 +2,7 @@
 
 namespace Papper\Internal;
 
+use Papper\Internal\Access\PropertyAccessGetter;
 use Papper\Internal\Access\ReflectionMethodGetter;
 use Papper\Internal\Access\ReflectionMethodSetter;
 use Papper\Internal\Access\ReflectionPropertyGetter;
@@ -32,17 +33,11 @@ class MemberAccessFactory
 		}
 
 		$propertyPath = implode('.', array_map(function (\Reflector $member) use ($mappingOptions) {
-			$memberName = $member->getName();
-			foreach ($mappingOptions->getSourcePrefixes() as $prefix) {
-				if (stripos($memberName, $prefix) === 0) {
-					$withoutPrefix = substr($memberName, strlen($prefix));
-					return $withoutPrefix;
-				}
-			}
-			return $memberName;
+			/** @var $member \ReflectionProperty|\ReflectionMethod */
+			return NamingHelper::possibleName($member->name, $mappingOptions->getSourcePrefixes()) ?: $member->getName();
 		}, $sourceMembers));
 
-		return $propertyPath;
+		return new PropertyAccessGetter($propertyPath);
 	}
 
 	private function createReflectionGetter(\Reflector $reflector)

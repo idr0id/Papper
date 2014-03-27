@@ -34,8 +34,8 @@ class TypeMapFactory
 
 		/** @var $destMembers \ReflectionProperty[]|\ReflectionMethod[] */
 		$destMembers = array_merge(
-			$destReflector->getProperties(\ReflectionProperty::IS_PUBLIC),
-			ReflectionHelper::getPublicMethods($destReflector, 1)
+			ReflectionHelper::getPublicMethods($destReflector, 1),
+			$destReflector->getProperties(\ReflectionProperty::IS_PUBLIC)
 		);
 
 		foreach ($destMembers as $destMember) {
@@ -45,12 +45,12 @@ class TypeMapFactory
 
 			$sourceMembers = array();
 
-			$getter = $this->memberAccessFactory->createMemberSetter($destMember, $mappingOptions);
-			$setter = $this->mapDestinationMemberToSource($sourceMembers, $sourceReflector, $destMember->getName(), $mappingOptions)
+			$setter = $this->memberAccessFactory->createMemberSetter($destMember, $mappingOptions);
+			$getter = $this->mapDestinationMemberToSource($sourceMembers, $sourceReflector, $destMember->getName(), $mappingOptions)
 				? $this->memberAccessFactory->createMemberGetter($sourceMembers, $mappingOptions)
 				: null;
 
-			$typeMap->addPropertyMap(new PropertyMap($getter, $setter));
+			$typeMap->addPropertyMap(new PropertyMap($setter, $getter));
 		}
 
 		return $typeMap;
@@ -114,28 +114,12 @@ class TypeMapFactory
 
 	private function nameMatches($sourceMemberName, $destMemberName, MappingOptionsInterface $mappingOptions)
 	{
-		$possibleSourceNames = $this->possibleNames($sourceMemberName, $mappingOptions->getSourcePrefixes());
-		$possibleDestNames = $this->possibleNames($destMemberName, $mappingOptions->getDestinationPrefixes());
+		$possibleSourceNames = NamingHelper::possibleNames($sourceMemberName, $mappingOptions->getSourcePrefixes());
+		$possibleDestNames = NamingHelper::possibleNames($destMemberName, $mappingOptions->getDestinationPrefixes());
 
 		return count(array_uintersect($possibleSourceNames, $possibleDestNames, function($a, $b){
 			return strcasecmp($a, $b);
 		})) > 0;
-	}
-
-	private function possibleNames($memberName, array $prefixes)
-	{
-		if (empty($memberName)) {
-			return array();
-		}
-
-		$possibleNames = array($memberName);
-		foreach ($prefixes as $prefix) {
-			if (stripos($memberName, $prefix) === 0) {
-				$withoutPrefix = substr($memberName, strlen($prefix));
-				$possibleNames[] = $withoutPrefix;
-			}
-		}
-		return $possibleNames;
 	}
 
 	private function splitDestinationMemberName($nameToSearch, MappingOptionsInterface $mappingOptions)
