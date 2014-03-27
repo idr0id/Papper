@@ -18,10 +18,10 @@ class ConvertUsing implements MemberOptionInterface
 	private $converter;
 
 	/**
-	 * @param ValueConverterInterface|\callable $converter Converter to use
+	 * @param ValueConverterInterface|\closure $converter Converter to use
 	 * @throws \InvalidArgumentException
 	 */
-	function __construct($converter)
+	public function __construct($converter)
 	{
 		if (is_callable($converter)) {
 			$converter = new ClosureValueConverter($converter);

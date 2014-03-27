@@ -19,7 +19,7 @@ class Papper
 	 */
 	public static function createMap($sourceType, $destinationType)
 	{
-		return static::engine()->createTypeMap($sourceType, $destinationType);
+		return self::engine()->createTypeMap($sourceType, $destinationType);
 	}
 
 	/**
@@ -34,7 +34,7 @@ class Papper
 	 */
 	public static function map($source, $destinationType, $sourceType = null)
 	{
-		return static::engine()->map($source, $destinationType, $sourceType);
+		return self::engine()->map($source, $destinationType, $sourceType);
 	}
 
 	/**
@@ -44,7 +44,7 @@ class Papper
 	 */
 	public function mappingOptions()
 	{
-		return static::engine()->getConfig()->getMappingOptions();
+		return self::engine()->getConfig()->getMappingOptions();
 	}
 
 	/**
@@ -55,10 +55,10 @@ class Papper
 	 */
 	public static function validate()
 	{
-		static::engine()->validate();
+		self::engine()->validate();
 	}
 
-	//<editor-fold desc="Singleton">
+	//<editor-fold desc="Singleton of Engine">
 	/**
 	 * Returns engine singleton instance
 	 *

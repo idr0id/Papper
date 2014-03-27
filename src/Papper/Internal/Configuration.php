@@ -17,6 +17,10 @@ class Configuration
 	 */
 	private $typeMaps = array();
 	/**
+	 * @var TypeMapFactory
+	 */
+	private $typeMapFactory;
+	/**
 	 * @var MappingOptionsInterface
 	 */
 	private $mappingOptions;

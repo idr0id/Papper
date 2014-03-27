@@ -57,11 +57,11 @@ class TypeMapFactory
 	}
 
 	/**
-	 * @param \ReflectionMethod[]|\ReflectionProperty[] $sourceMembers
+	 * @param \ReflectionProperty[]|\ReflectionMethod[] $sourceMembers
 	 * @param \ReflectionClass $sourceReflector
 	 * @param string $nameToSearch
 	 * @param MappingOptionsInterface $mappingOptions
-	 * @return array
+	 * @return bool
 	 */
 	public function mapDestinationMemberToSource(array &$sourceMembers, \ReflectionClass $sourceReflector, $nameToSearch,
 		MappingOptionsInterface $mappingOptions)
