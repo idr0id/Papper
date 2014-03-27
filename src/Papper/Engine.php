@@ -3,7 +3,6 @@
 namespace Papper;
 
 use Papper\Internal\Configuration;
-use Papper\Internal\ExceptionHelper;
 use Papper\Internal\MappingExpression;
 
 /**

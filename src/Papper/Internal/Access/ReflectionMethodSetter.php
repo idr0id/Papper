@@ -15,7 +15,7 @@ class ReflectionMethodSetter implements MemberSetterInterface
 
 	public function getName()
 	{
-		return $this->reflector->getName() . '()';
+		return $this->reflector->name . '()';
 	}
 
 	public function setValue($object, $value)

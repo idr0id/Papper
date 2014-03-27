@@ -2,7 +2,6 @@
 
 namespace Papper\Examples\ForMember\MapFrom;
 
-use Papper\MemberOption\Ignore;
 use Papper\MemberOption\MapFrom;
 use Papper\Papper;
 
