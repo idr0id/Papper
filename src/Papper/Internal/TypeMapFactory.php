@@ -2,12 +2,12 @@
 
 namespace Papper\Internal;
 
+use Papper\ClassNotFoundException;
 use Papper\Internal\Type\Type;
 use Papper\MappingOptionsInterface;
 use Papper\NotSupportedException;
 use Papper\PropertyMap;
 use Papper\TypeMap;
-use Papper\ClassNotFoundException;
 
 class TypeMapFactory
 {
@@ -39,6 +39,10 @@ class TypeMapFactory
 		);
 
 		foreach ($destMembers as $destMember) {
+			if ($destMember instanceof \ReflectionMethod && $destMember->isConstructor()) {
+				continue;
+			}
+
 			$sourceMembers = array();
 
 			$getter = $this->memberAccessFactory->createMemberSetter($destMember, $mappingOptions);

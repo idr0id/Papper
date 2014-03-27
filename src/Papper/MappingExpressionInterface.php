@@ -11,13 +11,12 @@ namespace Papper;
 interface MappingExpressionInterface
 {
 	/**
-	 * Skip member mapping and use a custom closure function or type converter {@see ValueConverterInterface} instance to convert to the destination type
+	 * Supply a custom instantiation function for the destination type
 	 *
-	 * @todo convertUsing
-	 * @param ValueConverterInterface|\closure $valueConverter
-	 * @return $this
+	 * @param ObjectCreatorInterface|\closure $objectCreator Callback to create the destination type given the source object
+	 * @return MappingExpressionInterface
 	 */
-	//public function convertUsing($valueConverter);
+	public function constructUsing($objectCreator);
 
 	/**
 	 * Customize configuration for individual member

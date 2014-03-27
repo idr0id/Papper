@@ -4,6 +4,7 @@ namespace Papper\Internal;
 
 use Papper\MappingExpressionInterface;
 use Papper\MemberOptionInterface;
+use Papper\ObjectCreatorInterface;
 use Papper\TypeMap;
 
 /**
@@ -24,10 +25,29 @@ class MappingExpression implements MappingExpressionInterface
 	}
 
 	/**
+	 * Supply a custom instantiation function for the destination type
+	 *
+	 * @param ObjectCreatorInterface|\closure $objectCreator Callback to create the destination type given the source object
+	 * @throws \InvalidArgumentException
+	 * @return MappingExpressionInterface
+	 */
+	public function constructUsing($objectCreator)
+	{
+		if (is_callable($objectCreator)) {
+			$objectCreator = new ClosureObjectCreator($objectCreator);
+		}
+		if (!$objectCreator instanceof ObjectCreatorInterface) {
+			throw new \InvalidArgumentException('Argument objectCreator must be closure or instance of Papper\ObjectCreatorInterface');
+		}
+		$this->typeMap->setObjectCreator($objectCreator);
+	}
+
+	/**
 	 * Customize configuration for individual member
 	 *
 	 * @param string $name Destination member name
 	 * @param MemberOptionInterface|MemberOptionInterface[] $memberOptions member option
+	 * @throws \InvalidArgumentException
 	 * @return MappingExpressionInterface
 	 */
 	public function forMember($name, $memberOptions)

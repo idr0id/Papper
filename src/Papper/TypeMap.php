@@ -70,9 +70,12 @@ class TypeMap implements TypeMapInterface
 		return isset($this->propertyMaps[$memberName]) ? $this->propertyMaps[$memberName] : null;
 	}
 
+	/**
+	 * @todo validate source members
+	 * @todo validate constructor args
+	 */
 	public function validate()
 	{
-		// @todo validate source members
 		$unmappedProperties = $this->getUnmappedProperties();
 
 		if (empty($unmappedProperties)) {
