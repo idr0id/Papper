@@ -12,7 +12,6 @@ class Papper
 {
 	/**
 	 * Creates a TypeMap for the source's type and destinationType.
-	 * Useful for creating TypeMaps for generic source data structures.
 	 *
 	 * @param string $sourceType
 	 * @param string $destinationType

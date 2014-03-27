@@ -9,11 +9,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 class User
 {
 	public $name;
-
-	public function __construct($name)
-	{
-		$this->name = $name;
-	}
 }
 
 class UserDTO
