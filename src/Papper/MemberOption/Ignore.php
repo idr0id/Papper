@@ -18,7 +18,6 @@ class Ignore implements MemberOptionInterface
 		if ($propertyMap === null) {
 			throw new \InvalidArgumentException('PropertyMap must not be null');
 		}
-
 		$propertyMap->makeIgnored();
 	}
 }

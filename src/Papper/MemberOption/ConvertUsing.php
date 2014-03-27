@@ -34,6 +34,9 @@ class ConvertUsing implements MemberOptionInterface
 
 	public function apply(TypeMap $typeMap, PropertyMap $propertyMap = null)
 	{
+		if ($propertyMap === null) {
+			throw new \InvalidArgumentException('PropertyMap must not be null');
+		}
 		$propertyMap->setValueConverter($this->converter);
 	}
 }
