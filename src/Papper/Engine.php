@@ -69,10 +69,16 @@ class Engine
 			throw new MappingException('Source type must be object instead of ' . gettype($source));
 		}
 
-		$typeMap = $this->config->findTypeMap($sourceType, $destinationType);
-		$typeMap->validate();
+		try {
+			$typeMap = $this->config->findTypeMap($sourceType, $destinationType);
+			$typeMap->validate();
 
-		return $this->performMapping($typeMap, $source);
+			return $this->performMapping($typeMap, $source);
+		} catch (\Exception $e) {
+			throw new MappingException(
+				sprintf("Error while mapping <%s:%s>", $typeMap->getSourceType(), $typeMap->getDestinationType()), 0, $e
+			);
+		}
 	}
 
 	/**
@@ -104,9 +110,17 @@ class Engine
 		$propertyMaps = array_filter($typeMap->getPropertyMaps(), function(PropertyMap $propertyMap) {
 			return !$propertyMap->isIgnored();
 		});
+		$destinationType = $typeMap->getDestinationType();
 
-		$mapFunc = function ($source) use ($objectCreator, $propertyMaps) {
+		$mapFunc = function ($source) use ($objectCreator, $propertyMaps, $destinationType) {
 			$destination = $objectCreator->create($source);
+
+			if (!$destination instanceof $destinationType) {
+				throw new ValidationException(
+					sprintf('Constucted object type expected <%s>, but actual <%s>', $destinationType, get_class($destination))
+				);
+			}
+
 			foreach ($propertyMaps as $propertyMap) {
 				$value = $propertyMap->getSourceGetter()->getValue($source);
 				if ($propertyMap->hasValueConverter()) {

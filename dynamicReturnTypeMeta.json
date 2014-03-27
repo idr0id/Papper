@@ -1,0 +1,9 @@
+{
+	"methodCalls": [
+		{
+			"class": "\\Mockery",
+			"method": "mock",
+			"position": 0
+		}
+	]
+}
