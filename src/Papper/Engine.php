@@ -117,7 +117,7 @@ class Engine
 
 			if (!$destination instanceof $destinationType) {
 				throw new ValidationException(
-					sprintf('Constucted object type expected <%s>, but actual <%s>', $destinationType, get_class($destination))
+					sprintf('Constructed object type expected <%s>, but actual <%s>', $destinationType, get_class($destination))
 				);
 			}
 
