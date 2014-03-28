@@ -80,8 +80,9 @@ class TypeMapFactory
 			$sourceMembers[] = $member;
 		} else {
 			$matches = $this->splitDestinationMemberName($nameToSearch, $mappingOptions);
+			$matchesCount = count($matches);
 
-			for ($i = 0; ($i < count($matches)) && !$foundMatch; $i++) {
+			for ($i = 0; ($i < $matchesCount) && !$foundMatch; $i++) {
 				$snippet = $this->createNameSnippet($matches, $i, $mappingOptions);
 
 				$member = $this->findTypeMember($sourceProperties, $sourceNoArgMethods, $snippet['first'], $mappingOptions);

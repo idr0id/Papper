@@ -38,7 +38,7 @@ class UserDTO
 }
 
 /** @var UserDTO $userDTO */
-$userDTO = Papper::map(new User('John Smith', 32), 'Papper\Examples\Priority\UserDTO');
+$userDTO = Papper::map(new User('John Smith'), 'Papper\Examples\Priority\UserDTO');
 
 echo "Name proprety: ", $userDTO->name, PHP_EOL;
 echo "Name method: ", $userDTO->getName(), PHP_EOL;
