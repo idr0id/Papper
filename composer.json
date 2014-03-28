@@ -1,6 +1,7 @@
 {
 	"name": "idr0id/papper",
 	"description": "Papper is PHP object to object mapper. Inspirited by Automapper and ModelMapper.",
+    "keywords": ["mapper", "automapper", "modelmapper", "dto"],
 	"minimum-stability": "stable",
 	"license": "MIT",
 	"authors": [
