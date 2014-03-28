@@ -44,8 +44,11 @@ for($i=0; $i < 100000; $i++) {
 	$users[] = new User('John Smith', 32);
 }
 
+Papper::createMap('Papper\Examples\Benchmarks\Collection\User', 'Papper\Examples\Benchmarks\Collection\UserDTO');
+
 $start = microtime(true);
+/** @noinspection PhpUnusedLocalVariableInspection */
 $usersDTOs = Papper::map($users, 'Papper\Examples\Benchmarks\Collection\UserDTO', 'Papper\Examples\Benchmarks\Collection\User');
 $end = microtime(true);
 
-echo "Mapping time for objects[] to object[] (sec): ", $end - $start, PHP_EOL;
+echo "Mapping time for object[] to object[] (sec): ", $end - $start, PHP_EOL;
