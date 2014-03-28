@@ -88,11 +88,11 @@ class TypeMapFactory
 				if ($member !== null) {
 					$sourceMembers[] = $member;
 
-					$nesterSourceReflector = $this->parseTypeFromAnnotation($member);
+					$nestedSourceReflector = $this->parseTypeFromAnnotation($member);
 
-					if ($nesterSourceReflector) {
+					if ($nestedSourceReflector) {
 						$foundMatch = $this->mapDestinationMemberToSource(
-							$sourceMembers, $nesterSourceReflector, $snippet['second'], $mappingOptions
+							$sourceMembers, $nestedSourceReflector, $snippet['second'], $mappingOptions
 						);
 					}
 
