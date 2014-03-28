@@ -49,7 +49,7 @@ class Papper
 
 	/**
 	 * Validates that every top level destination property is mapped to source property.
-	 * If not, a ConfigurationException is thrown detailing any missing mappings.
+	 * If not, a ValidationException is thrown detailing any missing mappings.
 	 *
 	 * @throws ValidationException if any TypeMaps contain unmapped properties
 	 */
