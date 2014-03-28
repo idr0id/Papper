@@ -111,9 +111,15 @@ class Engine
 			return !$propertyMap->isIgnored();
 		});
 		$destinationType = $typeMap->getDestinationType();
+		$beforeMap = $typeMap->getBeforeMapFunc();
+		$afterMap = $typeMap->getAfterMapFunc();
 
-		$mapFunc = function ($source) use ($objectCreator, $propertyMaps, $destinationType) {
+		$mapFunc = function ($source) use ($objectCreator, $propertyMaps, $destinationType, $beforeMap, $afterMap) {
 			$destination = $objectCreator->create($source);
+
+			if ($beforeMap) {
+				$beforeMap($source, $destination);
+			}
 
 			if (!$destination instanceof $destinationType) {
 				throw new ValidationException(
@@ -128,6 +134,11 @@ class Engine
 				}
 				$propertyMap->getDestinationSetter()->setValue($destination, $value);
 			}
+
+			if ($afterMap) {
+				$afterMap($source, $destination);
+			}
+
 			return $destination;
 		};
 

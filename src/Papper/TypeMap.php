@@ -20,6 +20,14 @@ class TypeMap implements TypeMapInterface
 	 * @var PropertyMap[]
 	 */
 	private $propertyMaps = array();
+	/**
+	 * @var \closure|null
+	 */
+	private $beforeMapFunc;
+	/**
+	 * @var \closure|null
+	 */
+	private $afterMapFunc;
 
 	public function __construct($sourceType, $destinationType, ObjectCreatorInterface $objectCreator)
 	{
@@ -93,6 +101,38 @@ class TypeMap implements TypeMapInterface
 	public function getPropertyMap($memberName)
 	{
 		return isset($this->propertyMaps[$memberName]) ? $this->propertyMaps[$memberName] : null;
+	}
+
+	/**
+	 * @return callable|null
+	 */
+	public function getBeforeMapFunc()
+	{
+		return $this->beforeMapFunc;
+	}
+
+	/**
+	 * @param callable $func
+	 */
+	public function setBeforeMapFunc(\closure $func)
+	{
+		$this->beforeMapFunc = $func;
+	}
+
+	/**
+	 * @return callable|null
+	 */
+	public function getAfterMapFunc()
+	{
+		return $this->afterMapFunc;
+	}
+
+	/**
+	 * @param callable $func
+	 */
+	public function setAfterMapFunc(\closure $func)
+	{
+		$this->afterMapFunc = $func;
 	}
 
 	/**

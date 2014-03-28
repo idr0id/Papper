@@ -25,11 +25,7 @@ class MappingExpression implements MappingExpressionInterface
 	}
 
 	/**
-	 * Supply a custom instantiation function for the destination type
-	 *
-	 * @param ObjectCreatorInterface|\closure $objectCreator Callback to create the destination type given the source object
-	 * @throws \InvalidArgumentException
-	 * @return MappingExpressionInterface
+	 * @inheritdoc
 	 */
 	public function constructUsing($objectCreator)
 	{
@@ -43,12 +39,7 @@ class MappingExpression implements MappingExpressionInterface
 	}
 
 	/**
-	 * Customize configuration for individual member
-	 *
-	 * @param string $name Destination member name
-	 * @param MemberOptionInterface|MemberOptionInterface[] $memberOptions Member options
-	 * @throws \InvalidArgumentException
-	 * @return MappingExpressionInterface
+	 * @inheritdoc
 	 */
 	public function forMember($name, $memberOptions)
 	{
@@ -62,6 +53,24 @@ class MappingExpression implements MappingExpressionInterface
 			$memberOption->apply($this->typeMap, $propertyMap);
 		}
 
+		return $this;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function beforeMap(\closure $func)
+	{
+		$this->typeMap->setBeforeMapFunc($func);
+		return $this;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function afterMap(\closure $func)
+	{
+		$this->typeMap->setAfterMapFunc($func);
 		return $this;
 	}
 
