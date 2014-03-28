@@ -42,7 +42,7 @@ class Papper
 	 *
 	 * @return MappingOptionsInterface
 	 */
-	public function mappingOptions()
+	public static function mappingOptions()
 	{
 		return self::engine()->getConfig()->getMappingOptions();
 	}
