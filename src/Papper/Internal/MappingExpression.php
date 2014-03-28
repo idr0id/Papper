@@ -46,7 +46,7 @@ class MappingExpression implements MappingExpressionInterface
 	 * Customize configuration for individual member
 	 *
 	 * @param string $name Destination member name
-	 * @param MemberOptionInterface|MemberOptionInterface[] $memberOptions member option
+	 * @param MemberOptionInterface|MemberOptionInterface[] $memberOptions Member options
 	 * @throws \InvalidArgumentException
 	 * @return MappingExpressionInterface
 	 */
@@ -74,4 +74,3 @@ class MappingExpression implements MappingExpressionInterface
 		}
 	}
 }
-

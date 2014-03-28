@@ -28,31 +28,49 @@ class TypeMap implements TypeMapInterface
 		$this->objectCreator = $objectCreator;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getDestinationType()
 	{
 		return $this->destinationType;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getSourceType()
 	{
 		return $this->sourceType;
 	}
 
+	/**
+	 * @return ObjectCreatorInterface
+	 */
 	public function getObjectCreator()
 	{
 		return $this->objectCreator;
 	}
 
+	/**
+	 * @param ObjectCreatorInterface $objectCreator
+	 */
 	public function setObjectCreator(ObjectCreatorInterface $objectCreator)
 	{
 		$this->objectCreator = $objectCreator;
 	}
 
+	/**
+	 * @return PropertyMap[]
+	 */
 	public function getPropertyMaps()
 	{
 		return $this->propertyMaps;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getUnmappedProperties()
 	{
 		return array_filter($this->propertyMaps, function (PropertyMap $propertyMap) {
@@ -60,11 +78,18 @@ class TypeMap implements TypeMapInterface
 		});
 	}
 
+	/**
+	 * @param PropertyMap $propertyMap
+	 */
 	public function addPropertyMap(PropertyMap $propertyMap)
 	{
 		$this->propertyMaps[$propertyMap->getMemberName()] = $propertyMap;
 	}
 
+	/**
+	 * @param string $memberName
+	 * @return null|PropertyMap
+	 */
 	public function getPropertyMap($memberName)
 	{
 		return isset($this->propertyMaps[$memberName]) ? $this->propertyMaps[$memberName] : null;
