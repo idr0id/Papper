@@ -3,9 +3,7 @@
 namespace Papper\Internal;
 
 use Papper\ClassNotFoundException;
-use Papper\Internal\Type\Type;
 use Papper\MappingOptionsInterface;
-use Papper\NotSupportedException;
 use Papper\PropertyMap;
 use Papper\TypeMap;
 
@@ -19,10 +17,15 @@ class TypeMapFactory
 	 * @var MemberAccessFactory
 	 */
 	private $memberAccessFactory;
+	/**
+	 * @var AnnotationTypeReader
+	 */
+	private $annotationTypeReader;
 
 	public function __construct()
 	{
 		$this->memberAccessFactory = new MemberAccessFactory();
+		$this->annotationTypeReader = new AnnotationTypeReader();
 	}
 
 	public function createTypeMap($sourceType, $destinationType, MappingOptionsInterface $mappingOptions)
@@ -85,12 +88,13 @@ class TypeMapFactory
 				if ($member !== null) {
 					$sourceMembers[] = $member;
 
-					$foundMatch = $this->mapDestinationMemberToSource(
-						$sourceMembers,
-						$this->parseTypeFromAnnotation($member),
-						$snippet['second'],
-						$mappingOptions
-					);
+					$nesterSourceReflector = $this->parseTypeFromAnnotation($member);
+
+					if ($nesterSourceReflector) {
+						$foundMatch = $this->mapDestinationMemberToSource(
+							$sourceMembers, $nesterSourceReflector, $snippet['second'], $mappingOptions
+						);
+					}
 
 					if (!$foundMatch) {
 						array_pop($sourceMembers);
@@ -142,10 +146,14 @@ class TypeMapFactory
 		);
 	}
 
-	private function parseTypeFromAnnotation(\Reflector $reflector)
+	/**
+	 * @param \ReflectionProperty|\ReflectionMethod $reflector
+	 * @return null|\ReflectionClass
+	 */
+	private function parseTypeFromAnnotation($reflector)
 	{
-		// @TODO: Implement TypeMapFactory::parseTypeFromAnnotation() method.
-		throw new NotSupportedException("Method TypeMapFactory::parseTypeFromAnnotation not implemented yet");
+		$type = $this->annotationTypeReader->getType($reflector);
+		return $type ? new \ReflectionClass($type) : null;
 	}
 
 	private function findReflector($type)

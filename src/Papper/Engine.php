@@ -69,10 +69,10 @@ class Engine
 			throw new MappingException('Source type must be object instead of ' . gettype($source));
 		}
 
-		try {
-			$typeMap = $this->config->findTypeMap($sourceType, $destinationType);
-			$typeMap->validate();
+		$typeMap = $this->config->findTypeMap($sourceType, $destinationType);
 
+		try {
+			$typeMap->validate();
 			return $this->performMapping($typeMap, $source);
 		} catch (\Exception $e) {
 			throw new MappingException(
