@@ -4,10 +4,11 @@ namespace Papper\Internal;
 
 use TokenReflection\Broker;
 use TokenReflection\Broker\Backend\Memory;
+use TokenReflection\ReflectionClass;
 
 class AnnotationTypeReader
 {
-	const TYPE_REGEXP = '#^[\w\d]+#i';
+	const TYPE_REGEXP = '/^[\\\\\w\d]+/i';
 	const PROPERTY_ANNOTATION_NAME = 'var';
 	const METHOD_ANNOTATION_NAME = 'method';
 
@@ -31,13 +32,13 @@ class AnnotationTypeReader
 
 		if ($reflector instanceof \ReflectionProperty) {
 			$name = 'var';
+			$annotations = $class->getProperty($reflector->name)->getAnnotations();
 		} elseif ($reflector instanceof \ReflectionMethod) {
-			$name = 'method';
+			$name = 'return';
+			$annotations = $class->getMethod($reflector->name)->getAnnotations();
 		} else {
 			return null;
 		}
-
-		$annotations = $class->getProperty($reflector->name)->getAnnotations();
 
 		if (!isset($annotations[$name])) {
 			return null;
@@ -51,16 +52,27 @@ class AnnotationTypeReader
 		foreach ($annotations as $annotation) {
 			preg_match(self::TYPE_REGEXP, $annotation, $matches);
 			if (!empty($matches[0])) {
-				$class = $matches[0];
+				list($path, $class) = $this->parseClassPath($matches[0]);
 
-				if (isset($namespaceAliases[$class])) {
+				if (empty($path) && isset($namespaceAliases[$class])) {
 					return $namespaceAliases[$class];
-				}
-				if (class_exists($namespace . '\\' . $class)) {
+				} else if (isset($namespaceAliases[$path])) {
+					return $namespaceAliases[$path] . '\\' . $class;
+				} else if (class_exists($namespace . '\\' . $class)) {
 					return $namespace . '\\' . $class;
+				} else if (class_exists($class)) {
+					return $class;
 				}
 			}
 		}
 		return null;
+	}
+
+	private function parseClassPath($classPath)
+	{
+		$pos = strpos($classPath, "\\");
+		return ($pos !== false)
+			? array(substr($classPath, 0, $pos), substr($classPath, $pos+1))
+			: array('', $classPath);
 	}
 }

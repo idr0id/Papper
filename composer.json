@@ -17,8 +17,13 @@
 	},
 	"autoload": {
 		"psr-0": {
-			"Papper": "src",
-			"Papper\\Tests": "tests"
+			"Papper": "src"
+		}
+	},
+	"autoload-dev": {
+		"psr-0": {
+			"Papper\\Tests": "tests",
+			"PapperGlobalAnnotationClass": "tests\\Papper\\Tests\\Fixtures\\Annotations"
 		}
 	},
 	"require-dev": {

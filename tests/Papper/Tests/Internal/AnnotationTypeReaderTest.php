@@ -3,35 +3,45 @@
 namespace Papper\Tests\Internal;
 
 use Papper\Internal\AnnotationTypeReader;
-use Papper\Tests\Fixtures\Domain\Customer;
-use Papper\Tests\Fixtures\Domain\Order;
-use Papper\Tests\Fixtures\Domain\User\User;
+use Papper\Tests\Fixtures\Annotations\AnotherNS\AnotherNsClass;
+use Papper\Tests\Fixtures\Annotations\AnotherNS\AliasedClass as AliasedPathClass;
+use Papper\Tests\Fixtures\Annotations\SameNS\AliasedClass;
+use Papper\Tests\Fixtures\Annotations\SameNS\Composite;
+use Papper\Tests\Fixtures\Annotations\SameNS\SameNsClass;
 
 class AnnotationTypeReaderTest extends \PHPUnit_Framework_TestCase
 {
-	public function testTypeOfPropertyAnnotationInSameNamespace()
+	/**
+	 * @dataProvider testGetTypeDataProvider
+	 */
+	public function testGetType($reflector, $classname)
 	{
 		// arrange
 		$annotationReader = new AnnotationTypeReader();
-		$propertyReflector = new \ReflectionProperty(Order::className(), 'customer');
-
 		// act
-		$type = $annotationReader->getType($propertyReflector);
-
+		$type = $annotationReader->getType($reflector);
 		// assert
-		$this->assertEquals(Customer::className(), $type);
+		$this->assertEquals($classname, $type);
 	}
 
-	public function testTypeOfMethodAnnotationInAnotherNamespace()
+	public function testGetTypeDataProvider()
 	{
-		// arrange
-		$annotationReader = new AnnotationTypeReader();
-		$propertyReflector = new \ReflectionProperty(Customer::className(), 'user');
-
-		// act
-		$type = $annotationReader->getType($propertyReflector);
-
-		// assert
-		$this->assertEquals(User::className(), $type);
+		return array(
+			'method, another ns' => array(
+				new \ReflectionMethod(Composite::className(), 'getAnotherNsClass'), AnotherNsClass::className()
+			),
+			'property, same ns' => array(
+				new \ReflectionProperty(Composite::className(), 'sameNsClass'), SameNsClass::className()
+			),
+			'property, aliased class' => array(
+				new \ReflectionProperty(Composite::className(), 'aliasedClass'), AliasedClass::className()
+			),
+			'property, aliased path class' => array(
+				new \ReflectionProperty(Composite::className(), 'aliasedPathClass'), AliasedPathClass::className()
+			),
+			'property, global class' => array(
+				new \ReflectionProperty(Composite::className(), 'globalClass'), \PapperGlobalAnnotationClass::className()
+			),
+		);
 	}
 }
