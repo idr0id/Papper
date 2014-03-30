@@ -1,8 +1,8 @@
 {
 	"name": "idr0id/papper",
+	"type": "library",
 	"description": "Papper is library to automatically map the properties and methods between objects.",
 	"keywords": ["mapper", "automapper", "modelmapper", "dto"],
-	"minimum-stability": "stable",
 	"license": "MIT",
 	"authors": [
 		{
@@ -28,6 +28,6 @@
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",
-        "mockery/mockery": "0.9.*"
+		"mockery/mockery": "0.9.*"
 	}
 }
