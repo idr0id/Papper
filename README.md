@@ -7,4 +7,4 @@ Papper
 
 Papper — PHP mapper.
 
-This is PHP adaptation of AutoMapper to automatically map the properties and methods between objects.
+This is library to automatically map the properties and methods between objects. Heavily inspirited by Automapper and ModelMapper.
