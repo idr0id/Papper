@@ -13,7 +13,7 @@ use Papper\Tests\Fixtures\SourceWithGetter;
 
 class EngineTest extends TestCaseBase
 {
-	public function testMapper_Should_CreateInstanceOfDestinationClass()
+	public function testMapperShouldCreateInstanceOfDestinationClass()
 	{
 		// arrange
 		$engine = new Engine();
@@ -23,7 +23,7 @@ class EngineTest extends TestCaseBase
 		$this->assertInstanceOf(Destination::className(), $destination);
 	}
 
-	public function testMapper_Should_MapPublicProperties()
+	public function testMapperShouldMapPublicProperties()
 	{
 		// arrange
 		$engine = new Engine();
@@ -33,7 +33,7 @@ class EngineTest extends TestCaseBase
 		$this->assertEquals('Some value', $destination->someValue);
 	}
 
-	public function testMapper_Should_MapFromGetter()
+	public function testMapperShouldMapFromGetter()
 	{
 		// arrange
 		$engine = new Engine();
@@ -43,7 +43,7 @@ class EngineTest extends TestCaseBase
 		$this->assertEquals('Some value', $destination->someValue);
 	}
 
-	public function testMapper_Should_MapToSetter()
+	public function testMapperShouldMapToSetter()
 	{
 		// arrange
 		$engine = new Engine();
@@ -53,7 +53,7 @@ class EngineTest extends TestCaseBase
 		$this->assertEquals('Some value', $destination->getSomeValue());
 	}
 
-	public function testMapper_Should_ConstructUsingClosure()
+	public function testMapperShouldConstructUsingClosure()
 	{
 		// arrange
 		$engine = new Engine();
@@ -67,7 +67,7 @@ class EngineTest extends TestCaseBase
 		$this->assertEquals('Some value', $destination->getSomeValue());
 	}
 
-	public function testMapper_Should_RaiseException_When_ConstructNotExpectedDestinationClass()
+	public function testMapperShouldRaiseExceptionWhenConstructNotExpectedDestinationClass()
 	{
 		$this->setExpectedException('Papper\MappingException');
 		// arrange
@@ -80,7 +80,7 @@ class EngineTest extends TestCaseBase
 		$engine->map(new Source(), Destination::className());
 	}
 
-	public function testMapper_Should_IgnoreMappingToPropertyOrSetter()
+	public function testMapperShouldIgnoreMappingToPropertyOrSetter()
 	{
 		// arrange
 		$engine = new Engine();
@@ -92,7 +92,7 @@ class EngineTest extends TestCaseBase
 		$this->assertNull($destination->someValue);
 	}
 
-	public function testMapper_Should_RaiseException_When_SourceHaveNotProperty()
+	public function testMapperShouldRaiseExceptionWhenSourceHaveNotProperty()
 	{
 		$this->setExpectedException('Papper\MappingException');
 		// arrange
