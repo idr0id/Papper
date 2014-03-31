@@ -15,6 +15,10 @@ This is library to automatically map the properties and methods between objects.
 
 It's currently under development and not ready for production use yet.
 
+## Benchmarks
+
+[**See the latest benchmarks**](https://github.com/idr0id/php-mappers-benchmarks)
+
 ## Composer Installation
 
 ```json
