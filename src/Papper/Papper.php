@@ -11,10 +11,10 @@ namespace Papper;
 class Papper
 {
 	/**
-	 * Creates a TypeMap for the source's type and destinationType.
+	 * Creates a TypeMap for the source's type and destination's type.
 	 *
-	 * @param string $sourceType
-	 * @param string $destinationType
+	 * @param string $sourceType Source type
+	 * @param string $destinationType Destination type
 	 * @return MappingExpressionInterface
 	 */
 	public static function createMap($sourceType, $destinationType)
@@ -23,14 +23,15 @@ class Papper
 	}
 
 	/**
-	 * Maps source to an instance of destinationType. Mapping is performed according
-	 * to the corresponding TypeMap. If no TypeMap exists for source.getClass()
-	 * destinationType then one is created.
+	 * Execute a mapping from the source object to a new destination object.
+	 * The source type is inferred from the source object.
+	 * If no Map exists then one is created.
 	 *
-	 * @param object|object[] $source
-	 * @param string $destinationType
-	 * @param string|null $sourceType
-	 * @return object
+	 * @param object $source Source object to map from
+	 * @param string $destinationType Destination type to create
+	 * @param string|null $sourceType Source object type
+	 * @throws MappingException
+	 * @return object|object[]
 	 */
 	public static function map($source, $destinationType, $sourceType = null)
 	{

@@ -34,11 +34,10 @@ class Engine
 	}
 
 	/**
-	 * Creates a TypeMap for the source's type and destinationType.
-	 * Useful for creating TypeMaps for generic source data structures.
+	 * Creates a TypeMap for the source's type and destination's type.
 	 *
-	 * @param string $sourceType
-	 * @param string $destinationType
+	 * @param string $sourceType Source type
+	 * @param string $destinationType Destination type
 	 * @return MappingExpressionInterface
 	 */
 	public function createTypeMap($sourceType, $destinationType)
@@ -47,13 +46,13 @@ class Engine
 	}
 
 	/**
-	 * Maps source to an instance of destinationType. Mapping is performed according
-	 * to the corresponding TypeMap. If no TypeMap exists for source.getClass()
-	 * destinationType then one is created.
+	 * Execute a mapping from the source object to a new destination object.
+	 * The source type is inferred from the source object.
+	 * If no Map exists then one is created.
 	 *
-	 * @param object|object[] $source
-	 * @param string $destinationType
-	 * @param string|null $sourceType
+	 * @param object $source Source object to map from
+	 * @param string $destinationType Destination type to create
+	 * @param string|null $sourceType Source object type
 	 * @throws MappingException
 	 * @return object|object[]
 	 */
