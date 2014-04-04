@@ -118,14 +118,14 @@ class Engine
 		$mapFunc = function ($source) use ($objectCreator, $propertyMaps, $destinationType, $beforeMap, $afterMap) {
 			$destination = $objectCreator->create($source);
 
-			if ($beforeMap) {
-				$beforeMap($source, $destination);
-			}
-
 			if (!$destination instanceof $destinationType) {
 				throw new ValidationException(
 					sprintf('Constructed object type expected <%s>, but actual <%s>', $destinationType, get_class($destination))
 				);
+			}
+
+			if ($beforeMap) {
+				$beforeMap($source, $destination);
 			}
 
 			foreach ($propertyMaps as $propertyMap) {
