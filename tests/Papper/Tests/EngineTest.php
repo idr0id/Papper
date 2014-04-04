@@ -57,7 +57,7 @@ class EngineTest extends TestCaseBase
 	{
 		// arrange
 		$engine = new Engine();
-		$engine->createTypeMap(Source::className(), DestinationWithConstructor::className())
+		$engine->createMap(Source::className(), DestinationWithConstructor::className())
 			->constructUsing(function (Source $source){
 				return new DestinationWithConstructor($source->someValue);
 			});
@@ -72,7 +72,7 @@ class EngineTest extends TestCaseBase
 		$this->setExpectedException('Papper\MappingException');
 		// arrange
 		$engine = new Engine();
-		$engine->createTypeMap(Source::className(), Destination::className())
+		$engine->createMap(Source::className(), Destination::className())
 			->constructUsing(function (Source $source){
 				return new DestinationWithConstructor($source->someValue);
 			});
@@ -84,7 +84,7 @@ class EngineTest extends TestCaseBase
 	{
 		// arrange
 		$engine = new Engine();
-		$engine->createTypeMap(SourceEmpty::className(), Destination::className())
+		$engine->createMap(SourceEmpty::className(), Destination::className())
 			->forMember('someValue', new Ignore());
 		// act
 		$destination = $engine->map(new SourceEmpty(), Destination::className()); /** @var Destination $destination */

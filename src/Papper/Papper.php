@@ -19,7 +19,7 @@ class Papper
 	 */
 	public static function createMap($sourceType, $destinationType)
 	{
-		return self::engine()->createTypeMap($sourceType, $destinationType);
+		return self::engine()->createMap($sourceType, $destinationType);
 	}
 
 	/**

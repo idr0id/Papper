@@ -41,7 +41,7 @@ class Engine
 	 * @throws ClassNotFoundException
 	 * @return MappingExpressionInterface
 	 */
-	public function createTypeMap($sourceType, $destinationType)
+	public function createMap($sourceType, $destinationType)
 	{
 		return new MappingExpression($this->config->findTypeMap($sourceType, $destinationType));
 	}
