@@ -38,6 +38,7 @@ class Engine
 	 *
 	 * @param string $sourceType Source type
 	 * @param string $destinationType Destination type
+	 * @throws ClassNotFoundException
 	 * @return MappingExpressionInterface
 	 */
 	public function createTypeMap($sourceType, $destinationType)
@@ -54,6 +55,7 @@ class Engine
 	 * @param string $destinationType Destination type to create
 	 * @param string|null $sourceType Source object type
 	 * @throws MappingException
+	 * @throws ClassNotFoundException
 	 * @return object|object[]
 	 */
 	public function map($source, $destinationType, $sourceType = null)

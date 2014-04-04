@@ -4,7 +4,6 @@ namespace Papper\Internal;
 
 use TokenReflection\Broker;
 use TokenReflection\Broker\Backend\Memory;
-use TokenReflection\ReflectionClass;
 
 class AnnotationTypeReader
 {
@@ -21,6 +20,10 @@ class AnnotationTypeReader
 
 	/**
 	 * @param \ReflectionProperty|\ReflectionMethod $reflector
+	 * @throws \Exception
+	 * @throws \TokenReflection\Exception\BrokerException
+	 * @throws \TokenReflection\Exception\ParseException
+	 * @throws \TokenReflection\Exception\RuntimeException
 	 * @return string
 	 */
 	public function getType($reflector)

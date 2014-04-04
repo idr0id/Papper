@@ -14,6 +14,7 @@ class MemberAccessFactory
 {
 	/**
 	 * @param \Reflector $destMember
+	 * @throws \Papper\NotSupportedException
 	 * @return MemberSetterInterface
 	 */
 	public function createMemberSetter(\Reflector $destMember)
@@ -24,6 +25,7 @@ class MemberAccessFactory
 	/**
 	 * @param \ReflectionProperty[]|\ReflectionMethod[] $sourceMembers
 	 * @param MappingOptionsInterface $mappingOptions
+	 * @throws \Papper\NotSupportedException
 	 * @return MemberGetterInterface
 	 */
 	public function createMemberGetter(array $sourceMembers, MappingOptionsInterface $mappingOptions)

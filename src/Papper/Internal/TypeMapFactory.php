@@ -149,6 +149,10 @@ class TypeMapFactory
 
 	/**
 	 * @param \ReflectionProperty|\ReflectionMethod $reflector
+	 * @throws \Exception
+	 * @throws \TokenReflection\Exception\BrokerException
+	 * @throws \TokenReflection\Exception\ParseException
+	 * @throws \TokenReflection\Exception\RuntimeException
 	 * @return null|\ReflectionClass
 	 */
 	private function parseTypeFromAnnotation($reflector)
