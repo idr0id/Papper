@@ -2,7 +2,7 @@
 
 namespace Papper;
 
-class TypeMap implements TypeMapInterface
+class TypeMap
 {
 	/**
 	 * @var string
