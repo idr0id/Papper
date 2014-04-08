@@ -51,6 +51,6 @@ class Configuration
 
 	private function computeTypePairHash($sourceType, $destinationType)
 	{
-		return $sourceType . '#' . $destinationType;
+		return ltrim($sourceType, '\\') . '#' . ltrim($destinationType, '\\');
 	}
 }
