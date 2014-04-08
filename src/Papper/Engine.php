@@ -8,7 +8,6 @@ use Papper\Internal\MappingExpression;
 /**
  * Papper mapping engine
  *
- * @todo mapping options api
  * @author Vladimir Komissarov <dr0id@dr0id.ru>
  */
 class Engine
