@@ -2,6 +2,11 @@
 
 namespace Papper;
 
+/**
+ * Main configuration object holding all mapping configuration for a source and destination type
+ *
+ * @author Vladimir Komissarov <dr0id@dr0id.ru>
+ */
 class TypeMap
 {
 	/**
@@ -71,9 +76,11 @@ class TypeMap
 	/**
 	 * @return PropertyMap[]
 	 */
-	public function getPropertyMaps()
+	public function getMappedPropertyMaps()
 	{
-		return $this->propertyMaps;
+		return array_filter($this->propertyMaps, function (PropertyMap $propertyMap) {
+			return $propertyMap->isMapped() && !$propertyMap->isIgnored();
+		});
 	}
 
 	/**
@@ -100,7 +107,9 @@ class TypeMap
 	 */
 	public function getPropertyMap($memberName)
 	{
-		return isset($this->propertyMaps[$memberName]) ? $this->propertyMaps[$memberName] : null;
+		return isset($this->propertyMaps[$memberName])
+			? $this->propertyMaps[$memberName]
+			: null;
 	}
 
 	/**
@@ -150,13 +159,56 @@ class TypeMap
 		$destinationType = $this->destinationType;
 
 		$messages = array_map(function (PropertyMap $propertyMap) use ($destinationType) {
-			return sprintf(
-				"The following member on <%s::%s> cannot be mapped:\nAdd a custom mapping expression, ignore or modify the destination member.",
-				$destinationType,
-				$propertyMap->getMemberName()
-			);
+			return sprintf("The following member on <%s::%s> cannot be mapped:\nAdd a custom mapping expression, ignore or modify the destination member.", $destinationType, $propertyMap->getMemberName());
 		}, $unmappedProperties);
 
 		throw new ValidationException(implode("\n\n", $messages));
+	}
+
+	public function getMapFunc()
+	{
+		$objectCreator = $this->getObjectCreator();
+		$propertyMaps = $this->getMappedPropertyMaps();
+		$sourceType = $this->getSourceType();
+		$destinationType = $this->getDestinationType();
+		$beforeMapFunc = $this->getBeforeMapFunc();
+		$afterMapFunc = $this->getAfterMapFunc();
+
+		return function ($source, $destination = null) use ($objectCreator, $propertyMaps, $sourceType, $destinationType, $beforeMapFunc, $afterMapFunc) {
+
+			if ($destination === null) {
+				$destination = $objectCreator->create($source);
+			}
+
+			if (!$destination instanceof $destinationType) {
+				$type = is_object($destination) ? get_class($destination) : gettype($destination);
+				$message = sprintf('Constructed object type expected <%s>, but actual <%s>', $destinationType, $type);
+				throw new ValidationException($message);
+			}
+
+			if (!$source instanceof $sourceType) {
+				$type = is_object($source) ? get_class($source) : gettype($source);
+				$message = sprintf('Source object type expected <%s>, but actual <%s>', $destinationType, $type);
+				throw new ValidationException($message);
+			}
+
+			if ($beforeMapFunc) {
+				$beforeMapFunc($source, $destination);
+			}
+
+			foreach ($propertyMaps as $propertyMap) {
+				$value = $propertyMap->getSourceGetter()->getValue($source);
+				if ($propertyMap->hasValueConverter()) {
+					$value = $propertyMap->getValueConverter()->converter($value);
+				}
+				$propertyMap->getDestinationSetter()->setValue($destination, $value);
+			}
+
+			if ($afterMapFunc) {
+				$afterMapFunc($source, $destination);
+			}
+
+			return $destination;
+		};
 	}
 }

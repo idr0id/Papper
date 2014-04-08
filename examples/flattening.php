@@ -38,7 +38,7 @@ class UserDTO
 }
 
 /** @var UserDTO $userDTO */
-$userDTO = Papper::map(new User('John Smith', 'Acme Corporation'), 'Papper\Examples\Flattening\UserDTO');
+$userDTO = Papper::map(new User('John Smith', 'Acme Corporation'))->toType('Papper\Examples\Flattening\UserDTO');
 
 echo "Name: ", $userDTO->name, PHP_EOL;
 echo "Company name: ", $userDTO->companyName, PHP_EOL;

@@ -45,7 +45,7 @@ Papper::createMap('Papper\Examples\BeforeAfterMap\User', 'Papper\Examples\Before
 		$destination->doAfter();
 	});
 
-$userDTO = Papper::map(new User('John Smith'), 'Papper\Examples\BeforeAfterMap\UserDTO');
+$userDTO = Papper::map(new User('John Smith'))->toType('Papper\Examples\BeforeAfterMap\UserDTO');
 
 echo 'Name: ', $userDTO->name, PHP_EOL;
 echo 'Actions: ', print_r($userDTO->getActions(), true), PHP_EOL;

@@ -4,6 +4,16 @@
 			"class": "\\Mockery",
 			"method": "mock",
 			"position": 0
-		}
+		},
+		{
+			"class": "ExecuteMappingExpressionInterface",
+			"method": "toType",
+			"position": 0
+		},
+		{
+			"class": "ExecuteMappingExpressionInterface",
+			"method": "to",
+			"position": 1
+		},
 	]
 }

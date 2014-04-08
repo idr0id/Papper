@@ -3,6 +3,7 @@
 namespace Papper;
 
 use Papper\Internal\Configuration;
+use Papper\Internal\ExecuteMappingExpression;
 use Papper\Internal\MappingExpression;
 
 /**
@@ -23,13 +24,13 @@ class Engine
 	}
 
 	/**
-	 * Returns current configuration
+	 * Returns mapping options
 	 *
-	 * @return Configuration
+	 * @return MappingOptionsInterface
 	 */
-	public function getConfig()
+	public function getMappingOptions()
 	{
-		return $this->config;
+		return $this->config->getMappingOptions();
 	}
 
 	/**
@@ -46,38 +47,42 @@ class Engine
 	}
 
 	/**
-	 * Execute a mapping from the source object to a new destination object.
-	 * The source type is inferred from the source object.
-	 * If no Map exists then one is created.
+	 * Initialize a mapping from the source object.
+	 * The source type can be is inferred from the source object.
 	 *
-	 * @param object $source Source object to map from
-	 * @param string $destinationType Destination type to create
+	 * @param object|object[] $source Source object or collection to map from
 	 * @param string|null $sourceType Source object type
 	 * @throws MappingException
-	 * @throws ClassNotFoundException
-	 * @return object|object[]
+	 * @return ExecuteMappingExpressionInterface
 	 */
-	public function map($source, $destinationType, $sourceType = null)
+	public function map($source, $sourceType = null)
 	{
-		if (is_array($source)) {
-			if (empty($sourceType)) {
-				throw new MappingException('Source type must specified explicitly for array mapping');
-			}
-		} else if (is_object($source)) {
-			$sourceType = $sourceType ?: get_class($source);
-		} else {
-			throw new MappingException('Source type must be object instead of ' . gettype($source));
-		}
+		return new ExecuteMappingExpression($this, $source, $sourceType);
+	}
 
-		$typeMap = $this->config->findTypeMap($sourceType, $destinationType);
+	/**
+	 * Execute a mapping using MappingContext
+	 *
+	 * @param MappingContext $context Mapping context
+	 * @return object|object[] Mapped destination object or collection
+	 * @throws MappingException
+	 * @throws ClassNotFoundException
+	 */
+	public function execute(MappingContext $context)
+	{
+		$typeMap = $this->config->findTypeMap($context->getSourceType(), $context->getDestinationType());
 
 		try {
 			$typeMap->validate();
-			return $this->performMapping($typeMap, $source);
+
+			$mapFunc = $typeMap->getMapFunc();
+
+			return (is_array($context->getSource()))
+				? array_map($mapFunc, $context->getSource())
+				: $mapFunc($context->getSource(), $context->getDestination());
 		} catch (\Exception $e) {
-			throw new MappingException(
-				sprintf("Error while mapping <%s:%s>", $typeMap->getSourceType(), $typeMap->getDestinationType()), 0, $e
-			);
+			$message = sprintf("Error while mapping <%s:%s>", $typeMap->getSourceType(), $typeMap->getDestinationType());
+			throw new MappingException($message, 0, $e);
 		}
 	}
 
@@ -93,7 +98,7 @@ class Engine
 		foreach ($this->config->getAllTypeMaps() as $typeMap) {
 			try {
 				$typeMap->validate();
-			} catch (ValidationException $e) {
+			} catch (\Exception $e) {
 				$errors[] = $e->getMessage();
 			}
 		}
@@ -103,49 +108,11 @@ class Engine
 		}
 	}
 
-	private function performMapping(TypeMap $typeMap, $source)
+	/**
+	 * Clear out all existing configuration
+	 */
+	public function reset()
 	{
-		$objectCreator = $typeMap->getObjectCreator();
-		/** @var $propertyMaps PropertyMap[] */
-		$propertyMaps = array_filter($typeMap->getPropertyMaps(), function(PropertyMap $propertyMap) {
-			return !$propertyMap->isIgnored();
-		});
-		$destinationType = $typeMap->getDestinationType();
-		$beforeMap = $typeMap->getBeforeMapFunc();
-		$afterMap = $typeMap->getAfterMapFunc();
-
-		$mapFunc = function ($source) use ($objectCreator, $propertyMaps, $destinationType, $beforeMap, $afterMap) {
-			$destination = $objectCreator->create($source);
-
-			if (!$destination instanceof $destinationType) {
-				throw new ValidationException(
-					sprintf('Constructed object type expected <%s>, but actual <%s>', $destinationType, get_class($destination))
-				);
-			}
-
-			if ($beforeMap) {
-				$beforeMap($source, $destination);
-			}
-
-			foreach ($propertyMaps as $propertyMap) {
-				$value = $propertyMap->getSourceGetter()->getValue($source);
-				if ($propertyMap->hasValueConverter()) {
-					$value = $propertyMap->getValueConverter()->converter($value);
-				}
-				$propertyMap->getDestinationSetter()->setValue($destination, $value);
-			}
-
-			if ($afterMap) {
-				$afterMap($source, $destination);
-			}
-
-			return $destination;
-		};
-
-		if (is_array($source)) {
-			return array_map($mapFunc, $source);
-		} else {
-			return $mapFunc($source);
-		}
+		$this->config = new Configuration();
 	}
 }

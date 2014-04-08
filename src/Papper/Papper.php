@@ -23,19 +23,17 @@ class Papper
 	}
 
 	/**
-	 * Execute a mapping from the source object to a new destination object.
-	 * The source type is inferred from the source object.
-	 * If no Map exists then one is created.
+	 * Initialize a mapping from the source object.
+	 * The source type can be is inferred from the source object.
 	 *
-	 * @param object $source Source object to map from
-	 * @param string $destinationType Destination type to create
+	 * @param object|object[] $source Source object or collection to map from
 	 * @param string|null $sourceType Source object type
 	 * @throws MappingException
-	 * @return object|object[]
+	 * @return ExecuteMappingExpressionInterface
 	 */
-	public static function map($source, $destinationType, $sourceType = null)
+	public static function map($source, $sourceType = null)
 	{
-		return self::engine()->map($source, $destinationType, $sourceType);
+		return self::engine()->map($source, $sourceType);
 	}
 
 	/**
@@ -45,7 +43,7 @@ class Papper
 	 */
 	public static function mappingOptions()
 	{
-		return self::engine()->getConfig()->getMappingOptions();
+		return self::engine()->getMappingOptions();
 	}
 
 	/**
@@ -57,6 +55,14 @@ class Papper
 	public static function validate()
 	{
 		self::engine()->validate();
+	}
+
+	/**
+	 * Clear out all existing configuration
+	 */
+	public static function reset()
+	{
+		self::engine()->reset();
 	}
 
 	//<editor-fold desc="Singleton of Engine">

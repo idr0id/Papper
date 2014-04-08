@@ -18,42 +18,46 @@ class EngineTest extends TestCaseBase
 		// arrange
 		$engine = new Engine();
 		// act
-		$destination = $engine->map(new Source(), Destination::className()); /** @var Destination $destination */
+		/** @var Destination $destination */
+		$destination = $engine->map(new Source())->toType(Destination::className());
 		// assert
 		$this->assertInstanceOf(Destination::className(), $destination);
 	}
 
-	public function testMapperShouldMapPublicProperties()
+	public function testMappingFromPropertyToProperties()
 	{
 		// arrange
 		$engine = new Engine();
 		// act
-		$destination = $engine->map(new Source(), Destination::className()); /** @var Destination $destination */
+		/** @var Destination $destination */
+		$destination = $engine->map(new Source())->toType(Destination::className());
 		// assert
 		$this->assertEquals('Some value', $destination->someValue);
 	}
 
-	public function testMapperShouldMapFromGetter()
+	public function testMappingFromGetterToProperty()
 	{
 		// arrange
 		$engine = new Engine();
 		// act
-		$destination = $engine->map(new SourceWithGetter(), Destination::className()); /** @var Destination $destination */
+		/** @var Destination $destination */
+		$destination = $engine->map(new SourceWithGetter())->toType(Destination::className());
 		// assert
 		$this->assertEquals('Some value', $destination->someValue);
 	}
 
-	public function testMapperShouldMapToSetter()
+	public function testMappingFromPropertyToToSetter()
 	{
 		// arrange
 		$engine = new Engine();
 		// act
-		$destination = $engine->map(new Source(), DestinationWithSetter::className()); /** @var DestinationWithSetter $destination */
+		/** @var DestinationWithSetter $destination */
+		$destination = $engine->map(new Source())->toType(DestinationWithSetter::className());
 		// assert
 		$this->assertEquals('Some value', $destination->getSomeValue());
 	}
 
-	public function testMapperShouldConstructUsingClosure()
+	public function testMappingUsingCustomConstructor()
 	{
 		// arrange
 		$engine = new Engine();
@@ -62,12 +66,13 @@ class EngineTest extends TestCaseBase
 				return new DestinationWithConstructor($source->someValue);
 			});
 		// act
-		$destination = $engine->map(new Source(), DestinationWithConstructor::className()); /** @var DestinationWithConstructor $destination */
+		/** @var DestinationWithConstructor $destination */
+		$destination = $engine->map(new Source())->toType('\\' . DestinationWithConstructor::className());
 		// assert
 		$this->assertEquals('Some value', $destination->getSomeValue());
 	}
 
-	public function testMapperShouldRaiseExceptionWhenConstructNotExpectedDestinationClass()
+	public function testMappingShouldThrowExceptionWhenCreatedInvalidDestinationClass()
 	{
 		$this->setExpectedException('Papper\MappingException');
 		// arrange
@@ -77,27 +82,28 @@ class EngineTest extends TestCaseBase
 				return new DestinationWithConstructor($source->someValue);
 			});
 		// act
-		$engine->map(new Source(), Destination::className());
+		$engine->map(new Source())->toType(Destination::className());
 	}
 
-	public function testMapperShouldIgnoreMappingToPropertyOrSetter()
+	public function testMappingShouldNotMapIgnoredMembers()
 	{
 		// arrange
 		$engine = new Engine();
 		$engine->createMap(SourceEmpty::className(), Destination::className())
 			->forMember('someValue', new Ignore());
 		// act
-		$destination = $engine->map(new SourceEmpty(), Destination::className()); /** @var Destination $destination */
+		/** @var Destination $destination */
+		$destination = $engine->map(new SourceEmpty())->toType(Destination::className());
 		// assert
 		$this->assertNull($destination->someValue);
 	}
 
-	public function testMapperShouldRaiseExceptionWhenSourceHaveNotProperty()
+	public function testMapperShouldThrowExceptionWhenSourceMemberMissing()
 	{
 		$this->setExpectedException('Papper\MappingException');
 		// arrange
 		$engine = new Engine();
 		// act
-		$engine->map(new SourceEmpty(), Destination::className());
+		$engine->map(new SourceEmpty())->toType(Destination::className());
 	}
 }

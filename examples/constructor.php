@@ -50,7 +50,7 @@ Papper::createMap('Papper\Examples\Constructor\User', 'Papper\Examples\Construct
 	});
 
 /** @var UserDTO $userDTO */
-$userDTO = Papper::map(new User('John Smith', 32), 'Papper\Examples\Constructor\UserDTO');
+$userDTO = Papper::map(new User('John Smith', 32))->toType('Papper\Examples\Constructor\UserDTO');
 
 echo "Name: ", $userDTO->getName(), PHP_EOL;
 echo "Age: ", $userDTO->getAge(), PHP_EOL;

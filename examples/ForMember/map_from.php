@@ -31,7 +31,7 @@ $user = new User('John Smith', 32);
 Papper::createMap('Papper\Examples\ForMember\MapFrom\User', 'Papper\Examples\ForMember\MapFrom\UserDTO')
 	->forMember('age', new MapFrom('lifeTime'));
 
-$userDTO = Papper::map($user, 'Papper\Examples\ForMember\MapFrom\UserDTO');
+$userDTO = Papper::map($user)->toType('Papper\Examples\ForMember\MapFrom\UserDTO');
 
 echo "Name: ", $userDTO->name, PHP_EOL;
 echo "Age: ", $userDTO->age, PHP_EOL;

@@ -1,7 +1,8 @@
 <?php
 
-namespace Papper\Examples\ArrayToArray;
+namespace Papper\Examples\Collection;
 
+use Papper\ClassName;
 use Papper\Papper;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -22,12 +23,10 @@ class UserDTO
 }
 
 $users = array();
-for($i=0; $i < 100000; $i++) {
+for($i=0; $i < 5; $i++) {
 	$users[] = new User('John Smith ' . $i);
 }
 
-$start = microtime(true);
-$usersDTOs = Papper::map($users, 'Papper\Examples\ArrayToArray\UserDTO', 'Papper\Examples\ArrayToArray\User');
-$end = microtime(true);
+$usersDTOs = Papper::map($users, 'Papper\Examples\Collection\User')->toType('Papper\Examples\Collection\UserDTO');
 
-echo "Mapping time (sec): ", $end - $start, PHP_EOL;
+print_r($usersDTOs);

@@ -23,6 +23,7 @@ interface MappingOptionsInterface
 	 * Sets naming convention for source members
 	 *
 	 * @param NamingConventionsInterface $sourceMemberNamingConvention
+	 * @return self
 	 */
 	public function setSourceMemberNamingConvention(NamingConventionsInterface $sourceMemberNamingConvention);
 
@@ -30,6 +31,7 @@ interface MappingOptionsInterface
 	 * Returns naming convention for destination members
 	 *
 	 * @return NamingConventionsInterface
+	 * @return self
 	 */
 	public function getDestinationMemberNamingConvention();
 
@@ -37,6 +39,7 @@ interface MappingOptionsInterface
 	 * Sets naming convention for destination members
 	 *
 	 * @param NamingConventionsInterface $destinationMemberNamingConvention
+	 * @return self
 	 */
 	public function setDestinationMemberNamingConvention(NamingConventionsInterface $destinationMemberNamingConvention);
 
@@ -51,6 +54,7 @@ interface MappingOptionsInterface
 	 * Sets source member name prefixes to ignore/drop
 	 *
 	 * @param string[] $sourcePrefixes
+	 * @return self
 	 */
 	public function setSourcePrefixes(array $sourcePrefixes);
 
@@ -65,6 +69,7 @@ interface MappingOptionsInterface
 	 * Sets destination member name prefixes to ignore/drop
 	 *
 	 * @param string[] $destinationPrefixes
+	 * @return self
 	 */
 	public function setDestinationPrefixes(array $destinationPrefixes);
 }

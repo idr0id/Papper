@@ -40,6 +40,7 @@ class MappingOptions implements MappingOptionsInterface
 	public function setSourceMemberNamingConvention(NamingConventionsInterface $sourceMemberNamingConvention)
 	{
 		$this->sourceMemberNamingConvention = $sourceMemberNamingConvention;
+		return $this;
 	}
 
 	public function getDestinationMemberNamingConvention()
@@ -50,6 +51,7 @@ class MappingOptions implements MappingOptionsInterface
 	public function setDestinationMemberNamingConvention(NamingConventionsInterface $destinationMemberNamingConvention)
 	{
 		$this->destinationMemberNamingConvention = $destinationMemberNamingConvention;
+		return $this;
 	}
 
 	public function getSourcePrefixes()
@@ -60,6 +62,7 @@ class MappingOptions implements MappingOptionsInterface
 	public function setSourcePrefixes(array $sourcePrefixes)
 	{
 		$this->sourcePrefixes = $sourcePrefixes;
+		return $this;
 	}
 
 	public function getDestinationPrefixes()
@@ -70,5 +73,6 @@ class MappingOptions implements MappingOptionsInterface
 	public function setDestinationPrefixes(array $destinationPrefixes)
 	{
 		$this->destinationPrefixes = $destinationPrefixes;
+		return $this;
 	}
 }

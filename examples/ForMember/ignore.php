@@ -29,7 +29,7 @@ $user = new User('John Smith');
 Papper::createMap('Papper\Examples\ForMember\Ignore\User', 'Papper\Examples\ForMember\Ignore\UserDTO')
 	->forMember('age', new Ignore());
 
-$userDTO = Papper::map($user, 'Papper\Examples\ForMember\UserDTO');
+$userDTO = Papper::map($user)->toType('Papper\Examples\ForMember\Ignore\UserDTO');
 
 echo "Name: ", $userDTO->name, PHP_EOL;
 echo "Age: ", $userDTO->age, PHP_EOL;

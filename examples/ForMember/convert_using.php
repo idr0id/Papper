@@ -34,7 +34,7 @@ Papper::createMap('Papper\Examples\ForMember\ConvertUsing\User', 'Papper\Example
 		return $diff->format('%y');
 	}));
 
-$userDTO = Papper::map($user, 'Papper\Examples\ForMember\ConvertUsing\UserDTO');
+$userDTO = Papper::map($user)->toType('Papper\Examples\ForMember\ConvertUsing\UserDTO');
 
 echo "Name: ", $userDTO->name, PHP_EOL;
 echo "Age: ", $userDTO->age, PHP_EOL;
