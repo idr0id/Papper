@@ -2,7 +2,6 @@
 
 namespace Papper\Examples\Collection;
 
-use Papper\ClassName;
 use Papper\Papper;
 
 require_once __DIR__ . '/../vendor/autoload.php';
