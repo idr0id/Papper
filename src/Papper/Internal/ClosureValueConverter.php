@@ -13,7 +13,7 @@ class ClosureValueConverter implements ValueConverterInterface
 		$this->closure = $closure;
 	}
 
-	public function converter($value)
+	public function convert($value)
 	{
 		$closure = $this->closure;
 		return $closure($value);

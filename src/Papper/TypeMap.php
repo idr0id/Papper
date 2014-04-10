@@ -199,7 +199,7 @@ class TypeMap
 			foreach ($propertyMaps as $propertyMap) {
 				$value = $propertyMap->getSourceGetter()->getValue($source);
 				if ($propertyMap->hasValueConverter()) {
-					$value = $propertyMap->getValueConverter()->converter($value);
+					$value = $propertyMap->getValueConverter()->convert($value);
 				}
 				$propertyMap->getDestinationSetter()->setValue($destination, $value);
 			}

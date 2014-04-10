@@ -9,5 +9,5 @@ namespace Papper;
  */
 interface ValueConverterInterface
 {
-	public function converter($value);
+	public function convert($value);
 }
