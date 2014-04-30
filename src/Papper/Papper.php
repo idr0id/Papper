@@ -65,18 +65,18 @@ class Papper
 		self::engine()->reset();
 	}
 
-	//<editor-fold desc="Singleton of Engine">
 	/**
 	 * Returns engine singleton instance
 	 *
 	 * @return Engine
 	 */
-	private static function engine()
+	public static function engine()
 	{
 		static $instance;
 		return $instance ?: $instance = new Engine();
 	}
 
+	//<editor-fold desc="Singleton/Static">
 	private function __construct()
 	{
 	}
