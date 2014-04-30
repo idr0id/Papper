@@ -15,7 +15,7 @@ class Papper
 	 *
 	 * @param string $sourceType Source type
 	 * @param string $destinationType Destination type
-	 * @return MappingExpressionInterface
+	 * @return MappingFluentSyntaxInterface
 	 */
 	public static function createMap($sourceType, $destinationType)
 	{
@@ -29,7 +29,7 @@ class Papper
 	 * @param object|object[] $source Source object or collection to map from
 	 * @param string|null $sourceType Source object type
 	 * @throws MappingException
-	 * @return ExecuteMappingExpressionInterface
+	 * @return ExecuteMappingFluentSyntaxInterface
 	 */
 	public static function map($source, $sourceType = null)
 	{

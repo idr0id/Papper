@@ -2,7 +2,7 @@
 
 namespace Papper\Internal;
 
-use Papper\MappingExpressionInterface;
+use Papper\MappingFluentSyntaxInterface;
 use Papper\MemberOptionInterface;
 use Papper\ObjectCreatorInterface;
 use Papper\TypeMap;
@@ -12,7 +12,7 @@ use Papper\TypeMap;
  *
  * @author Vladimir Komissarov <dr0id@dr0id.ru>
  */
-class MappingExpression implements MappingExpressionInterface
+class MappingFluentSyntax implements MappingFluentSyntaxInterface
 {
 	/**
 	 * @var TypeMap

@@ -7,7 +7,7 @@ namespace Papper;
  *
  * @author Vladimir Komissarov <dr0id@dr0id.ru>
  */
-interface ExecuteMappingExpressionInterface
+interface ExecuteMappingFluentSyntaxInterface
 {
 	/**
 	 * Execute a mapping to the existing destination object.

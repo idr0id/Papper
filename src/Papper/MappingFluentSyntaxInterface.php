@@ -7,13 +7,13 @@ namespace Papper;
  *
  * @author Vladimir Komissarov <dr0id@dr0id.ru>
  */
-interface MappingExpressionInterface
+interface MappingFluentSyntaxInterface
 {
 	/**
 	 * Supply a custom instantiation function for the destination type
 	 *
 	 * @param ObjectCreatorInterface|\closure $objectCreator Callback to create the destination type given the source object
-	 * @return MappingExpressionInterface
+	 * @return MappingFluentSyntaxInterface
 	 */
 	public function constructUsing($objectCreator);
 
@@ -22,7 +22,7 @@ interface MappingExpressionInterface
 	 *
 	 * @param string $name Destination member name
 	 * @param MemberOptionInterface|MemberOptionInterface[] $memberOptions Member option
-	 * @return MappingExpressionInterface
+	 * @return MappingFluentSyntaxInterface
 	 */
 	public function forMember($name, $memberOptions);
 

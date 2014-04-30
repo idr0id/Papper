@@ -3,12 +3,12 @@
 namespace Papper\Internal;
 
 use Papper\Engine;
-use Papper\ExecuteMappingExpressionInterface;
+use Papper\ExecuteMappingFluentSyntaxInterface;
 use Papper\MappingContext;
 use Papper\MappingException;
 use Papper\NotSupportedException;
 
-class ExecuteMappingExpression implements ExecuteMappingExpressionInterface
+class ExecuteMappingFluentSyntax implements ExecuteMappingFluentSyntaxInterface
 {
 	private $context;
 	private $engine;
