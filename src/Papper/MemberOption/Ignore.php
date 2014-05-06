@@ -13,11 +13,8 @@ use Papper\TypeMap;
  */
 class Ignore implements MemberOptionInterface
 {
-	public function apply(TypeMap $typeMap, PropertyMap $propertyMap = null)
+	public function apply(TypeMap $typeMap, PropertyMap $propertyMap)
 	{
-		if ($propertyMap === null) {
-			throw new \InvalidArgumentException('PropertyMap must not be null');
-		}
 		$propertyMap->makeIgnored();
 	}
 }

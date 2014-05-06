@@ -5,6 +5,7 @@ namespace Papper\Internal;
 use Papper\MappingFluentSyntaxInterface;
 use Papper\MemberOptionInterface;
 use Papper\ObjectCreatorInterface;
+use Papper\PropertyMap;
 use Papper\TypeMap;
 
 /**
@@ -48,6 +49,7 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 		$this->assertMemberOptions($memberOptions);
 
 		$propertyMap = $this->typeMap->getPropertyMap($name);
+		$this->assertPropertyMapExists($propertyMap, $name);
 
 		foreach ($memberOptions as $memberOption) {
 			$memberOption->apply($this->typeMap, $propertyMap);
@@ -80,6 +82,18 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 			if (!$memberOption instanceof MemberOptionInterface) {
 				throw new \InvalidArgumentException('Argument memberOptions must be array or single instance of Papper\MemberOptionInterface');
 			}
+		}
+	}
+
+	private function assertPropertyMapExists(PropertyMap $propertyMap = null, $name)
+	{
+		if ($propertyMap === null) {
+			throw new \InvalidArgumentException(sprintf(
+				'Property "%s" in map %s -> %s not found',
+				$name,
+				$this->typeMap->getDestinationType(),
+				$this->typeMap->getSourceType()
+			));
 		}
 	}
 }

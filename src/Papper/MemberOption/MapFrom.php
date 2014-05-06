@@ -26,11 +26,8 @@ class MapFrom implements MemberOptionInterface
 		$this->sourceMemberPath = $sourceMemberPath;
 	}
 
-	public function apply(TypeMap $typeMap, PropertyMap $propertyMap = null)
+	public function apply(TypeMap $typeMap, PropertyMap $propertyMap)
 	{
-		if ($propertyMap === null) {
-			throw new \InvalidArgumentException('PropertyMap must not be null');
-		}
 		$propertyMap->setSourceGetter(new PropertyAccessGetter($this->sourceMemberPath));
 	}
 }

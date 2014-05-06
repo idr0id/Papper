@@ -9,5 +9,5 @@ namespace Papper;
  */
 interface MemberOptionInterface
 {
-	public function apply(TypeMap $typeMap, PropertyMap $propertyMap = null);
+	public function apply(TypeMap $typeMap, PropertyMap $propertyMap);
 }
