@@ -47,6 +47,17 @@ class Engine
 	}
 
 	/**
+	 * Configure map
+	 *
+	 * @param MappingConfigurationInterface $configuration
+	 */
+	public function configureMap(MappingConfigurationInterface $configuration)
+	{
+		$map = $this->createMap($configuration->getSourceType(), $configuration->getDestinationType());
+		$configuration->configure($map);
+	}
+
+	/**
 	 * Initialize a mapping from the source object.
 	 * The source type can be is inferred from the source object.
 	 *

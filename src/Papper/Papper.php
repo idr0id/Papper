@@ -23,6 +23,16 @@ class Papper
 	}
 
 	/**
+	 * Configure map
+	 *
+	 * @param MappingConfigurationInterface $configuration
+	 */
+	public static function configureMap(MappingConfigurationInterface $configuration)
+	{
+		self::engine()->configureMap($configuration);
+	}
+
+	/**
 	 * Initialize a mapping from the source object.
 	 * The source type can be is inferred from the source object.
 	 *
