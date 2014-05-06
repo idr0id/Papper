@@ -159,7 +159,7 @@ class TypeMap
 		$destinationType = $this->destinationType;
 
 		$messages = array_map(function (PropertyMap $propertyMap) use ($destinationType) {
-			return sprintf("The following member on <%s::%s> cannot be mapped:\nAdd a custom mapping expression, ignore or modify the destination member.", $destinationType, $propertyMap->getMemberName());
+			return sprintf("The following member on %s::%s cannot be mapped:\nAdd a custom mapping expression, ignore or modify the destination member.", $destinationType, $propertyMap->getMemberName());
 		}, $unmappedProperties);
 
 		throw new ValidationException(implode("\n\n", $messages));
@@ -182,13 +182,13 @@ class TypeMap
 
 			if (!$destination instanceof $destinationType) {
 				$type = is_object($destination) ? get_class($destination) : gettype($destination);
-				$message = sprintf('Constructed object type expected <%s>, but actual <%s>', $destinationType, $type);
+				$message = sprintf('Constructed object type expected %s, but actual %s', $destinationType, $type);
 				throw new ValidationException($message);
 			}
 
 			if (!$source instanceof $sourceType) {
 				$type = is_object($source) ? get_class($source) : gettype($source);
-				$message = sprintf('Source object type expected <%s>, but actual <%s>', $destinationType, $type);
+				$message = sprintf('Source object type expected %s, but actual %s', $destinationType, $type);
 				throw new ValidationException($message);
 			}
 

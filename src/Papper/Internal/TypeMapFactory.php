@@ -164,7 +164,7 @@ class TypeMapFactory
 	private function findReflector($type)
 	{
 		if (!class_exists($type)) {
-			throw new ClassNotFoundException(sprintf('Type <%s> must be class', $type));
+			throw new ClassNotFoundException(sprintf('Type %s must be a class', $type));
 		}
 
 		return isset($this->reflectorsCache[$type])
