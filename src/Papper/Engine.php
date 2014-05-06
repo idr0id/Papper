@@ -51,7 +51,7 @@ class Engine
 	 *
 	 * @param MappingConfigurationInterface $configuration
 	 */
-	public function configureMap(MappingConfigurationInterface $configuration)
+	public function configureMapping(MappingConfigurationInterface $configuration)
 	{
 		$configuration->configure(new MappingConfigurationContext($this));
 	}

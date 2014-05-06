@@ -23,13 +23,13 @@ class Papper
 	}
 
 	/**
-	 * Configure map
+	 * Configure mapping
 	 *
 	 * @param MappingConfigurationInterface $configuration
 	 */
-	public static function configureMap(MappingConfigurationInterface $configuration)
+	public static function configureMapping(MappingConfigurationInterface $configuration)
 	{
-		self::engine()->configureMap($configuration);
+		self::engine()->configureMapping($configuration);
 	}
 
 	/**
