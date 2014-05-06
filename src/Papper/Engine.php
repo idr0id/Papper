@@ -53,8 +53,7 @@ class Engine
 	 */
 	public function configureMap(MappingConfigurationInterface $configuration)
 	{
-		$map = $this->createMap($configuration->getSourceType(), $configuration->getDestinationType());
-		$configuration->configure($map);
+		$configuration->configure(new MappingConfigurationContext($this));
 	}
 
 	/**

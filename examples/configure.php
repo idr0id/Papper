@@ -2,8 +2,8 @@
 
 namespace Papper\Examples\Configure;
 
+use Papper\MappingConfigurationContext;
 use Papper\MappingConfigurationInterface;
-use Papper\MappingFluentSyntaxInterface;
 use Papper\MemberOption\Ignore;
 use Papper\Papper;
 
@@ -27,19 +27,10 @@ class UserDTO
 
 class MappingConfiguration implements MappingConfigurationInterface
 {
-	public function getSourceType()
+	public function configure(MappingConfigurationContext $context)
 	{
-		return 'Papper\Examples\Configure\User';
-	}
-
-	public function getDestinationType()
-	{
-		return 'Papper\Examples\Configure\UserDTO';
-	}
-
-	public function configure(MappingFluentSyntaxInterface $map)
-	{
-		$map->forMember('age', new Ignore());
+		$context->createMap('Papper\Examples\Configure\User', 'Papper\Examples\Configure\UserDTO')
+			->forMember('age', new Ignore());
 	}
 }
 
