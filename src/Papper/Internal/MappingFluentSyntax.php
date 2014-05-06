@@ -91,8 +91,8 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 			throw new \InvalidArgumentException(sprintf(
 				'Property "%s" in map %s -> %s not found',
 				$name,
-				$this->typeMap->getDestinationType(),
-				$this->typeMap->getSourceType()
+				$this->typeMap->getSourceType(),
+				$this->typeMap->getDestinationType()
 			));
 		}
 	}
