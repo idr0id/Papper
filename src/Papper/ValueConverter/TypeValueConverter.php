@@ -38,4 +38,39 @@ class TypeValueConverter implements ValueConverterInterface
 		}
 		return $value;
 	}
+
+	public static function boolean()
+	{
+		return new self('boolean');
+	}
+
+	public static function integer()
+	{
+		return new self('integer');
+	}
+
+	public static function float()
+	{
+		return new self('float');
+	}
+
+	public static function string()
+	{
+		return new self('string');
+	}
+
+	public static function arr()
+	{
+		return new self('array');
+	}
+
+	public static function object()
+	{
+		return new self('object');
+	}
+
+	public static function null()
+	{
+		return new self('null');
+	}
 }
