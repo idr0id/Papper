@@ -6,8 +6,16 @@ class NamingHelper
 {
 	public static function possibleName($memberName, array $prefixes)
 	{
-		$names = self::possibleNames($memberName, $prefixes);
-		return reset($names) ?: null;
+		if (empty($memberName)) {
+			return null;
+		}
+		foreach ($prefixes as $prefix) {
+			if (stripos($memberName, $prefix) === 0) {
+				$withoutPrefix = substr($memberName, strlen($prefix));
+				return $withoutPrefix;
+			}
+		}
+		return null;
 	}
 
 	public static function possibleNames($memberName, array $prefixes)
