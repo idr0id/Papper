@@ -156,13 +156,15 @@ class TypeMap
 			return;
 		}
 
-		$destinationType = $this->destinationType;
-
-		$messages = array_map(function (PropertyMap $propertyMap) use ($destinationType) {
-			return sprintf("The following member on %s::%s cannot be mapped:\nAdd a custom mapping expression, ignore or modify the destination member.", $destinationType, $propertyMap->getMemberName());
+		$memberNames = array_map(function (PropertyMap $propertyMap) {
+			return $propertyMap->getMemberName();
 		}, $unmappedProperties);
 
-		throw new ValidationException(implode("\n\n", $messages));
+		throw new ValidationException(sprintf(
+			"Unmapped members were found. Add a custom mapping expression, ignore, " .
+			"add a custom resolver, or modify the source/destination type:\n%s -> %s\nDestination members: %s",
+			$this->sourceType, $this->destinationType, implode(", ", $memberNames)
+		));
 	}
 
 	public function getMapFunc()
