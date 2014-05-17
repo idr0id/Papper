@@ -29,4 +29,4 @@ It's currently under development and not ready for production use yet.
 }
 ```
 
-Through terminal: `composer require idr0id/papper:dev-master`
+Through terminal: `composer require idr0id/papper:~1.0.0-rc`
