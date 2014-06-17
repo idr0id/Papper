@@ -10,11 +10,13 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 class User
 {
 	public $name;
+	public $family;
 	public $lifeTime;
 
-	public function __construct($name, $lifeTime)
+	public function __construct($name, $family, $lifeTime)
 	{
 		$this->name = $name;
+		$this->family = $family;
 		$this->lifeTime = $lifeTime;
 	}
 }
@@ -26,9 +28,12 @@ class UserDTO
 }
 
 /** @var UserDTO $userDTO */
-$user = new User('John Smith', 32);
+$user = new User('John', 'Smith', 32);
 
 Papper::createMap('Papper\Examples\ForMember\MapFrom\User', 'Papper\Examples\ForMember\MapFrom\UserDTO')
+	->forMember('name', new MapFrom(function(User $source) {
+		return $source->family . ' ' . $source->name;
+	}))
 	->forMember('age', new MapFrom('lifeTime'));
 
 $userDTO = Papper::map($user)->toType('Papper\Examples\ForMember\MapFrom\UserDTO');
