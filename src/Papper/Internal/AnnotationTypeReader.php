@@ -9,7 +9,20 @@ class AnnotationTypeReader
 {
 	const TYPE_REGEXP = '/^[\\\\\w\d]+/i';
 	const PROPERTY_ANNOTATION_NAME = 'var';
-	const METHOD_ANNOTATION_NAME = 'method';
+	const METHOD_ANNOTATION_NAME = 'return';
+
+	private static $ignoredTypes = array(
+		'boolean',
+		'bool',
+		'integer',
+		'int',
+		'float',
+		'double',
+		'string',
+		'array',
+		'object',
+		'null'
+	);
 
 	private $broker;
 
@@ -34,10 +47,10 @@ class AnnotationTypeReader
 		$class = $this->broker->getClass($declaringClass->name);
 
 		if ($reflector instanceof \ReflectionProperty) {
-			$name = 'var';
+			$name = self::PROPERTY_ANNOTATION_NAME;
 			$annotations = $class->getProperty($reflector->name)->getAnnotations();
 		} elseif ($reflector instanceof \ReflectionMethod) {
-			$name = 'return';
+			$name = self::METHOD_ANNOTATION_NAME;
 			$annotations = $class->getMethod($reflector->name)->getAnnotations();
 		} else {
 			return null;
@@ -56,6 +69,10 @@ class AnnotationTypeReader
 			preg_match(self::TYPE_REGEXP, $annotation, $matches);
 			if (!empty($matches[0])) {
 				list($path, $class) = $this->parseClassPath($matches[0]);
+
+				if ($this->isIgnoredType($class)) {
+					continue;
+				}
 
 				if (empty($path) && isset($namespaceAliases[$class])) {
 					return $namespaceAliases[$class];
@@ -77,5 +94,10 @@ class AnnotationTypeReader
 		return ($pos !== false)
 			? array(substr($classPath, 0, $pos), substr($classPath, $pos+1))
 			: array('', $classPath);
+	}
+
+	private function isIgnoredType($type)
+	{
+		return in_array($type, self::$ignoredTypes);
 	}
 }
