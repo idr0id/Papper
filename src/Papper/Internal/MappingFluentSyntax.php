@@ -5,6 +5,7 @@ namespace Papper\Internal;
 use Papper\MappingFluentSyntaxInterface;
 use Papper\MemberOptionInterface;
 use Papper\ObjectCreatorInterface;
+use Papper\PapperConfigurationException;
 use Papper\PropertyMap;
 use Papper\TypeMap;
 
@@ -34,7 +35,7 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 			$objectCreator = new ClosureObjectCreator($objectCreator);
 		}
 		if (!$objectCreator instanceof ObjectCreatorInterface) {
-			throw new \InvalidArgumentException('Argument objectCreator must be closure or instance of Papper\ObjectCreatorInterface');
+			throw new PapperConfigurationException('Argument objectCreator must be closure or instance of Papper\ObjectCreatorInterface');
 		}
 		$this->typeMap->setObjectCreator($objectCreator);
 	}
@@ -80,7 +81,7 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 	{
 		foreach ($memberOptions as $memberOption) {
 			if (!$memberOption instanceof MemberOptionInterface) {
-				throw new \InvalidArgumentException('Argument memberOptions must be array or single instance of Papper\MemberOptionInterface');
+				throw new PapperConfigurationException('Member options must be array or instance of Papper\MemberOptionInterface');
 			}
 		}
 	}
@@ -88,12 +89,7 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 	private function assertPropertyMapExists(PropertyMap $propertyMap = null, $name)
 	{
 		if ($propertyMap === null) {
-			throw new \InvalidArgumentException(sprintf(
-				'Property "%s" in map %s -> %s not found',
-				$name,
-				$this->typeMap->getSourceType(),
-				$this->typeMap->getDestinationType()
-			));
+			throw new PapperConfigurationException(sprintf('Unable to find destination member %s on type %s', $name, $this->typeMap->getDestinationType()));
 		}
 	}
 }
