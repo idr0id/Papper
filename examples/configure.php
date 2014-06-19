@@ -34,7 +34,7 @@ class MappingConfiguration implements MappingConfigurationInterface
 	}
 }
 
-Papper::configureMap(new MappingConfiguration());
+Papper::configureMapping(new MappingConfiguration());
 
 /** @var UserDTO $userDTO */
 $userDTO = Papper::map(new User('John Smith'))->toType('Papper\Examples\Configure\UserDTO');
