@@ -4,26 +4,29 @@ namespace Papper\Internal;
 
 use TokenReflection\Broker;
 use TokenReflection\Broker\Backend\Memory;
+use TokenReflection\ReflectionClass as TokenReflectionClass;
 
+/**
+ * Class AnnotationTypeReader
+ *
+ * @author Vladimir Komissarov <dr0id@dr0id.ru>
+ * @todo add detection of multiple classes definition
+ * @todo refactor returned type from string to reflection class
+ */
 class AnnotationTypeReader
 {
-	const TYPE_REGEXP = '/^[\\\\\w\d]+/i';
+	const TYPE_REGEXP = '/^[\\\\a-zA-Z_\x7f-\xff][\\\\a-zA-Z0-9_\x7f-\xff]*/i';
 	const PROPERTY_ANNOTATION_NAME = 'var';
 	const METHOD_ANNOTATION_NAME = 'return';
 
-	private static $ignoredTypes = array(
-		'boolean',
-		'bool',
-		'integer',
-		'int',
-		'float',
-		'double',
-		'string',
-		'array',
-		'object',
-		'null'
-	);
+	/**
+	 * @var string[]
+	 */
+	private static $ignoredTypes = array('boolean', 'bool', 'integer', 'int', 'float', 'double', 'string', 'array', 'object', 'null');
 
+	/**
+	 * @var \TokenReflection\Broker
+	 */
 	private $broker;
 
 	public function __construct()
@@ -31,69 +34,68 @@ class AnnotationTypeReader
 		$this->broker = new Broker(new Memory());
 	}
 
-	/**
-	 * @param \ReflectionProperty|\ReflectionMethod $reflector
-	 * @throws \Exception
-	 * @throws \TokenReflection\Exception\BrokerException
-	 * @throws \TokenReflection\Exception\ParseException
-	 * @throws \TokenReflection\Exception\RuntimeException
-	 * @return string
-	 */
-	public function getType($reflector)
+	public function getType(\Reflector $reflector)
 	{
-		$declaringClass = $reflector->getDeclaringClass();
+		if (!$reflector instanceof \ReflectionProperty && !$reflector instanceof \ReflectionMethod) {
+			throw new \InvalidArgumentException('Argument "reflector" should be instance of \ReflectionProperty or \ReflectionMethod');
+		}
 
-		$this->broker->processFile($declaringClass->getFileName());
-		$class = $this->broker->getClass($declaringClass->name);
+		if (null === $tokenizedClass = $this->getTokenizedReflectionClass($reflector->getDeclaringClass())) {
+			return null;
+		}
 
 		if ($reflector instanceof \ReflectionProperty) {
 			$name = self::PROPERTY_ANNOTATION_NAME;
-			$annotations = $class->getProperty($reflector->name)->getAnnotations();
-		} elseif ($reflector instanceof \ReflectionMethod) {
-			$name = self::METHOD_ANNOTATION_NAME;
-			$annotations = $class->getMethod($reflector->name)->getAnnotations();
+			$annotations = $tokenizedClass->getProperty($reflector->name)->getAnnotations();
 		} else {
-			return null;
+			$name = self::METHOD_ANNOTATION_NAME;
+			$annotations = $tokenizedClass->getMethod($reflector->name)->getAnnotations();
 		}
 
-		if (!isset($annotations[$name])) {
-			return null;
-		}
-
-		return $this->parseType($annotations[$name], $class->getNamespaceName(), $class->getNamespaceAliases());
+		return isset($annotations[$name])
+			? $this->parseType($annotations[$name], $tokenizedClass)
+			: null;
 	}
 
-	private function parseType($annotations, $namespace, array $namespaceAliases)
+	private function getTokenizedReflectionClass(\ReflectionClass $class)
 	{
+		$this->broker->processFile($class->getFileName());
+		return $this->broker->getClass($class->name);
+	}
+
+	private function parseType($annotations, TokenReflectionClass $tokenizedClass)
+	{
+		$currentNamespace = $tokenizedClass->getNamespaceName();
+		$currentNamespaceAliases = $tokenizedClass->getNamespaceAliases();
+
 		foreach ($annotations as $annotation) {
 			preg_match(self::TYPE_REGEXP, $annotation, $matches);
 			if (!empty($matches[0])) {
-				list($path, $class) = $this->parseClassPath($matches[0]);
+				list($parsedNamespace, $parsedClassName) = $this->parseClass($matches[0]);
 
-				if ($this->isIgnoredType($class)) {
+				if ($this->isIgnoredType($parsedClassName)) {
 					continue;
 				}
 
-				if (empty($path) && isset($namespaceAliases[$class])) {
-					return $namespaceAliases[$class];
-				} else if (isset($namespaceAliases[$path])) {
-					return $namespaceAliases[$path] . '\\' . $class;
-				} else if (class_exists($namespace . '\\' . $class)) {
-					return $namespace . '\\' . $class;
-				} else if (class_exists($class)) {
-					return $class;
+				if (empty($parsedNamespace) && isset($currentNamespaceAliases[$parsedClassName])) {
+					return $currentNamespaceAliases[$parsedClassName];
+				} else if (isset($currentNamespaceAliases[$parsedNamespace])) {
+					return $currentNamespaceAliases[$parsedNamespace] . '\\' . $parsedClassName;
+				} else if (class_exists($currentNamespace . '\\' . $parsedClassName)) {
+					return $currentNamespace . '\\' . $parsedClassName;
+				} else if (class_exists($parsedClassName)) {
+					return $parsedClassName;
 				}
 			}
 		}
 		return null;
 	}
 
-	private function parseClassPath($classPath)
+	private function parseClass($classDefinition)
 	{
-		$pos = strpos($classPath, "\\");
-		return ($pos !== false)
-			? array(substr($classPath, 0, $pos), substr($classPath, $pos+1))
-			: array('', $classPath);
+		return (false !== $pos = strpos($classDefinition, "\\"))
+			? array(substr($classDefinition, 0, $pos), substr($classDefinition, $pos + 1))
+			: array('', $classDefinition);
 	}
 
 	private function isIgnoredType($type)
