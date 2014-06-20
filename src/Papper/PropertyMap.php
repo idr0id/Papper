@@ -65,7 +65,7 @@ class PropertyMap
 		return $this->valueConverter !== null;
 	}
 
-	public function makeIgnored()
+	public function ignore()
 	{
 		$this->isIgnored = true;
 	}

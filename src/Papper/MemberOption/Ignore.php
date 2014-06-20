@@ -15,6 +15,6 @@ class Ignore implements MemberOptionInterface
 {
 	public function apply(TypeMap $typeMap, PropertyMap $propertyMap)
 	{
-		$propertyMap->makeIgnored();
+		$propertyMap->ignore();
 	}
 }

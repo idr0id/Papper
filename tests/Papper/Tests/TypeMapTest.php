@@ -18,7 +18,7 @@ class TypeMapTest extends TestCaseBase
 		$typeMap->addPropertyMap($mappedPropertyMap);
 		$typeMap->addPropertyMap($unmappedPropertyMap);
 		// act
-		$unmappedProperties = $typeMap->getUnmappedProperties();
+		$unmappedProperties = $typeMap->getUnmappedPropertyMaps();
 		// assert
 		$this->assertCount(1, $unmappedProperties);
 		$this->assertSame($unmappedPropertyMap, $unmappedProperties['unmapped']);

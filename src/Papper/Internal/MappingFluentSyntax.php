@@ -61,6 +61,16 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 	/**
 	 * @inheritdoc
 	 */
+	public function ignoreAllNonExisting()
+	{
+		foreach ($this->typeMap->getUnmappedPropertyMaps() as $propertyMap) {
+			$propertyMap->ignore();
+		}
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	public function beforeMap(\closure $func)
 	{
 		$this->typeMap->setBeforeMapFunc($func);

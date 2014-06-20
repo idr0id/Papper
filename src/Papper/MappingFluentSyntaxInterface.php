@@ -27,6 +27,13 @@ interface MappingFluentSyntaxInterface
 	public function forMember($name, $memberOptions);
 
 	/**
+	 * Ignores all remaining unmapped members that do not exist on the destination.
+	 *
+	 * @return $this
+	 */
+	public function ignoreAllNonExisting();
+
+	/**
 	 * Execute a custom closure function to the source and/or destination types before member mapping
 	 *
 	 * @param \closure $func Callback for the source/destination types

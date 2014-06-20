@@ -76,6 +76,14 @@ class TypeMap
 	/**
 	 * @return PropertyMap[]
 	 */
+	public function getPropertyMaps()
+	{
+		return $this->propertyMaps;
+	}
+
+	/**
+	 * @return PropertyMap[]
+	 */
 	public function getMappedPropertyMaps()
 	{
 		return array_filter($this->propertyMaps, function (PropertyMap $propertyMap) {
@@ -84,9 +92,9 @@ class TypeMap
 	}
 
 	/**
-	 * @return array
+	 * @return PropertyMap[]
 	 */
-	public function getUnmappedProperties()
+	public function getUnmappedPropertyMaps()
 	{
 		return array_filter($this->propertyMaps, function (PropertyMap $propertyMap) {
 			return !$propertyMap->isMapped();
@@ -150,7 +158,7 @@ class TypeMap
 	 */
 	public function validate()
 	{
-		$unmappedProperties = $this->getUnmappedProperties();
+		$unmappedProperties = $this->getUnmappedPropertyMaps();
 
 		if (empty($unmappedProperties)) {
 			return;
