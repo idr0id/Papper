@@ -14,10 +14,10 @@ class User
 	 */
 	public $company;
 
-	public function __construct($name, $companyName)
+	public function __construct($name, Company $company)
 	{
 		$this->name = $name;
-		$this->company = new Company($companyName);
+		$this->company = $company;
 	}
 }
 
@@ -38,7 +38,7 @@ class UserDTO
 }
 
 /** @var UserDTO $userDTO */
-$userDTO = Papper::map(new User('John Smith', 'Acme Corporation'))->toType('Papper\Examples\Flattening\UserDTO');
+$userDTO = Papper::map(new User('John Smith', new Company('Acme Corporation')))->toType('Papper\Examples\Flattening\UserDTO');
 
 echo "Name: ", $userDTO->name, PHP_EOL;
 echo "Company name: ", $userDTO->companyName, PHP_EOL;
