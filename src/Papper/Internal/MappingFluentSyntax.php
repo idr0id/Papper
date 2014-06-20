@@ -6,7 +6,6 @@ use Papper\MappingFluentSyntaxInterface;
 use Papper\MemberOptionInterface;
 use Papper\ObjectCreatorInterface;
 use Papper\PapperConfigurationException;
-use Papper\PropertyMap;
 use Papper\TypeMap;
 
 /**
@@ -45,17 +44,17 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 	 */
 	public function forMember($name, $memberOptions)
 	{
-		/** @var $memberOptions MemberOptionInterface[] */
-		$memberOptions = is_array($memberOptions) ? $memberOptions : array($memberOptions);
-		$this->assertMemberOptions($memberOptions);
-
 		$propertyMap = $this->typeMap->getPropertyMap($name);
-		$this->assertPropertyMapExists($propertyMap, $name);
-
+		if ($propertyMap === null) {
+			throw new PapperConfigurationException(sprintf('Unable to find destination member %s on type %s', $name, $this->typeMap->getDestinationType()));
+		}
+		$memberOptions = is_array($memberOptions) ? $memberOptions : array($memberOptions);
 		foreach ($memberOptions as $memberOption) {
+			if (!$memberOption instanceof MemberOptionInterface) {
+				throw new PapperConfigurationException('Member options must be array or instance of Papper\MemberOptionInterface');
+			}
 			$memberOption->apply($this->typeMap, $propertyMap);
 		}
-
 		return $this;
 	}
 
@@ -75,21 +74,5 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 	{
 		$this->typeMap->setAfterMapFunc($func);
 		return $this;
-	}
-
-	private function assertMemberOptions(array $memberOptions)
-	{
-		foreach ($memberOptions as $memberOption) {
-			if (!$memberOption instanceof MemberOptionInterface) {
-				throw new PapperConfigurationException('Member options must be array or instance of Papper\MemberOptionInterface');
-			}
-		}
-	}
-
-	private function assertPropertyMapExists(PropertyMap $propertyMap = null, $name)
-	{
-		if ($propertyMap === null) {
-			throw new PapperConfigurationException(sprintf('Unable to find destination member %s on type %s', $name, $this->typeMap->getDestinationType()));
-		}
 	}
 }
