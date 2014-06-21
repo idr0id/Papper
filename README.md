@@ -7,9 +7,9 @@ Papper
 [![Total Downloads](https://poser.pugx.org/idr0id/papper/downloads.png)](https://packagist.org/packages/idr0id/papper)
 [![License](https://poser.pugx.org/idr0id/papper/license.png)](https://packagist.org/packages/idr0id/papper)
 
-Papper — PHP mapper.
+Papper is PHP convention-based object to object mapper.
 
-This is library to automatically map the properties and methods between objects. Heavily inspirited by Automapper and ModelMapper.
+This is library to automatically map the properties and methods between objects. Heavily inspirited by [Automapper](http://automapper.org) and [ModelMapper](http://modelmapper.org).
 
 ## WARNING
 
