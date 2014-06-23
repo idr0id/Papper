@@ -13,6 +13,7 @@ class PropertyAccessGetter implements MemberGetterInterface
 
 	public function __construct($propertyPathAsString)
 	{
+		$this->propertyPathAsString = $propertyPathAsString;
 		$this->propertyPath = new PropertyPath($propertyPathAsString);
 	}
 
