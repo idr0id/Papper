@@ -1,6 +1,6 @@
 <?php
 
-namespace Papper\Examples\Simple;
+namespace Papper\Examples\ConventionMapping;
 
 use Papper\Papper;
 
@@ -40,7 +40,17 @@ class UserDTO
 }
 
 /** @var UserDTO $userDTO */
-$userDTO = Papper::map(new User('John Smith', 32))->toType('Papper\Examples\Simple\UserDTO');
+$userDTO = Papper::map(new User('John Smith', 32))->toType('Papper\Examples\ConventionMapping\UserDTO');
 
-echo "Name: ", $userDTO->name, PHP_EOL;
-echo "Age: ", $userDTO->getAge(), PHP_EOL;
+print_r($userDTO);
+
+/*
+ * The above example will output:
+ *
+ * Papper\Examples\ConventionMapping\UserDTO Object
+ * (
+ *     [name] => John Smith
+ *     [age:Papper\Examples\ConventionMapping\UserDTO:private] => 32
+ * )
+ *
+ */

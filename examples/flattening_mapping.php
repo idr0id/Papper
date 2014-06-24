@@ -1,6 +1,6 @@
 <?php
 
-namespace Papper\Examples\Flattening;
+namespace Papper\Examples\FlatteningMapping;
 
 use Papper\Papper;
 
@@ -60,8 +60,18 @@ class UserDTO
 
 /** @var UserDTO $userDTO */
 $userDTO = Papper::map(new User('John Smith', new Company('Acme Corporation'), new Role('Developer')))
-	->toType('Papper\Examples\Flattening\UserDTO');
+	->toType('Papper\Examples\FlatteningMapping\UserDTO');
 
-echo "Name: ", $userDTO->name, PHP_EOL;
-echo "Company name: ", $userDTO->companyName, PHP_EOL;
-echo "Role name: ", $userDTO->roleName, PHP_EOL;
+print_r($userDTO);
+
+/*
+ * The above example will output:
+ *
+ * Papper\Examples\FlatteningMapping\UserDTO Object
+ * (
+ *     [name] => John Smith
+ *     [companyName] => Acme Corporation
+ *     [roleName] => Developer
+ * )
+ *
+ */
