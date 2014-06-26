@@ -2,11 +2,11 @@
 
 namespace Papper\Internal\Access;
 
-use Papper\Internal\MemberGetterInterface;
+use Papper\Internal\MemberSetterInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
-class PropertyAccessGetter implements MemberGetterInterface
+class PropertyAccessSetter implements MemberSetterInterface
 {
 	private $propertyPathAsString;
 	private $propertyPath;
@@ -22,8 +22,8 @@ class PropertyAccessGetter implements MemberGetterInterface
 		return $this->propertyPathAsString;
 	}
 
-	public function getValue($object)
+	public function setValue($object, $value)
 	{
-		return PropertyAccess::createPropertyAccessor()->getValue($object, $this->propertyPath);
+		PropertyAccess::createPropertyAccessor()->setValue($object, $this->propertyPath, $value);
 	}
 }

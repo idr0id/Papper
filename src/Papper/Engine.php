@@ -91,7 +91,7 @@ class Engine
 				? array_map($mapFunc, $context->getSource())
 				: $mapFunc($context->getSource(), $context->getDestination());
 		} catch (\Exception $e) {
-			$message = sprintf("Error while mapping <%s:%s>", $typeMap->getSourceType(), $typeMap->getDestinationType());
+			$message = sprintf("Error while mapping %s -> %s", $typeMap->getSourceType(), $typeMap->getDestinationType());
 			throw new MappingException($message, 0, $e);
 		}
 	}

@@ -47,5 +47,20 @@ Papper::createMap('Papper\Examples\BeforeAfterMap\User', 'Papper\Examples\Before
 
 $userDTO = Papper::map(new User('John Smith'))->toType('Papper\Examples\BeforeAfterMap\UserDTO');
 
-echo 'Name: ', $userDTO->name, PHP_EOL;
-echo 'Actions: ', print_r($userDTO->getActions(), true), PHP_EOL;
+print_r($userDTO);
+
+/*
+ * The above example will output:
+ *
+ * Papper\Examples\BeforeAfterMap\UserDTO Object
+ * (
+ *     [name] => John Smith
+ *     [actions:Papper\Examples\BeforeAfterMap\UserDTO:private] => Array
+ *         (
+ *             [0] => before!
+ *             [1] => after!
+ *         )
+ *
+ * )
+ *
+ */

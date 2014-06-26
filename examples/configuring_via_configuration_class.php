@@ -1,6 +1,6 @@
 <?php
 
-namespace Papper\Examples\Configure;
+namespace Papper\Examples\Configuring;
 
 use Papper\MappingConfigurationContext;
 use Papper\MappingConfigurationInterface;
@@ -34,10 +34,20 @@ class MappingConfiguration implements MappingConfigurationInterface
 	}
 }
 
-Papper::configureMap(new MappingConfiguration());
+Papper::configureMapping(new MappingConfiguration());
 
 /** @var UserDTO $userDTO */
 $userDTO = Papper::map(new User('John Smith'))->toType('Papper\Examples\Configure\UserDTO');
 
-echo "Name: ", $userDTO->name, PHP_EOL;
-echo "Age: ", $userDTO->age, PHP_EOL;
+print_r($userDTO);
+
+/*
+ * The above example will output:
+ *
+ * Papper\Examples\Configure\UserDTO Object
+ * (
+ *     [name] => John Smith
+ *     [age] => default value of ignored member
+ * )
+ *
+ */

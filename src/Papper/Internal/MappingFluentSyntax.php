@@ -2,6 +2,8 @@
 
 namespace Papper\Internal;
 
+use Papper\Internal\Access\PropertyAccessSetter;
+use Papper\Internal\Access\StdClassPropertySetter;
 use Papper\MappingFluentSyntaxInterface;
 use Papper\MemberOptionInterface;
 use Papper\ObjectCreatorInterface;
@@ -45,18 +47,54 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 	 */
 	public function forMember($name, $memberOptions)
 	{
-		/** @var $memberOptions MemberOptionInterface[] */
-		$memberOptions = is_array($memberOptions) ? $memberOptions : array($memberOptions);
-		$this->assertMemberOptions($memberOptions);
-
 		$propertyMap = $this->typeMap->getPropertyMap($name);
-		$this->assertPropertyMapExists($propertyMap, $name);
-
+		if ($propertyMap === null) {
+			throw new PapperConfigurationException(sprintf('Unable to find destination member %s on type %s', $name, $this->typeMap->getDestinationType()));
+		}
+		$memberOptions = is_array($memberOptions) ? $memberOptions : array($memberOptions);
 		foreach ($memberOptions as $memberOption) {
+			if (!$memberOption instanceof MemberOptionInterface) {
+				throw new PapperConfigurationException('Member options must be array or instance of Papper\MemberOptionInterface');
+			}
 			$memberOption->apply($this->typeMap, $propertyMap);
 		}
-
 		return $this;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function forDynamicMember($name, $memberOptions = null)
+	{
+		$propertyMap = $this->typeMap->getPropertyMap($name);
+		if ($propertyMap !== null) {
+			throw new PapperConfigurationException(sprintf('Unable to create dynamic destination member %s on type %s because it already exists in type', $name, $this->typeMap->getDestinationType()));
+		}
+
+		$setter = $this->typeMap->getDestinationType() === 'stdClass'
+			? new StdClassPropertySetter($name)
+			: new PropertyAccessSetter($name);
+
+		$this->typeMap->addPropertyMap($propertyMap = new PropertyMap($setter));
+
+		$memberOptions = is_array($memberOptions) ? $memberOptions : array($memberOptions);
+		foreach ($memberOptions as $memberOption) {
+			if (!$memberOption instanceof MemberOptionInterface) {
+				throw new PapperConfigurationException('Member options must be array or instance of Papper\MemberOptionInterface');
+			}
+			$memberOption->apply($this->typeMap, $propertyMap);
+		}
+		return $this;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function ignoreAllNonExisting()
+	{
+		foreach ($this->typeMap->getUnmappedPropertyMaps() as $propertyMap) {
+			$propertyMap->ignore();
+		}
 	}
 
 	/**
@@ -75,21 +113,5 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 	{
 		$this->typeMap->setAfterMapFunc($func);
 		return $this;
-	}
-
-	private function assertMemberOptions(array $memberOptions)
-	{
-		foreach ($memberOptions as $memberOption) {
-			if (!$memberOption instanceof MemberOptionInterface) {
-				throw new PapperConfigurationException('Member options must be array or instance of Papper\MemberOptionInterface');
-			}
-		}
-	}
-
-	private function assertPropertyMapExists(PropertyMap $propertyMap = null, $name)
-	{
-		if ($propertyMap === null) {
-			throw new PapperConfigurationException(sprintf('Unable to find destination member %s on type %s', $name, $this->typeMap->getDestinationType()));
-		}
 	}
 }

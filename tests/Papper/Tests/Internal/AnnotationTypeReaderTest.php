@@ -3,8 +3,8 @@
 namespace Papper\Tests\Internal;
 
 use Papper\Internal\AnnotationTypeReader;
-use Papper\Tests\Fixtures\Annotations\AnotherNS\AnotherNsClass;
 use Papper\Tests\Fixtures\Annotations\AnotherNS\AliasedClass as AliasedPathClass;
+use Papper\Tests\Fixtures\Annotations\AnotherNS\AnotherNsClass;
 use Papper\Tests\Fixtures\Annotations\SameNS\AliasedClass;
 use Papper\Tests\Fixtures\Annotations\SameNS\Composite;
 use Papper\Tests\Fixtures\Annotations\SameNS\SameNsClass;
@@ -13,6 +13,8 @@ class AnnotationTypeReaderTest extends \PHPUnit_Framework_TestCase
 {
 	/**
 	 * @dataProvider testGetTypeDataProvider
+	 * @param \Reflector $reflector
+	 * @param string $classname
 	 */
 	public function testGetType($reflector, $classname)
 	{
