@@ -8,7 +8,7 @@ class ClosureAccessGetter implements MemberGetterInterface
 {
 	private $closure;
 
-	public function __construct(\closure $closure)
+	public function __construct(\Closure $closure)
 	{
 		$this->closure = $closure;
 	}

@@ -12,7 +12,7 @@ interface MappingFluentSyntaxInterface
 	/**
 	 * Supply a custom instantiation function for the destination type
 	 *
-	 * @param ObjectCreatorInterface|\closure $objectCreator Callback to create the destination type given the source object
+	 * @param ObjectCreatorInterface|\Closure $objectCreator Callback to create the destination type given the source object
 	 * @return MappingFluentSyntaxInterface
 	 */
 	public function constructUsing($objectCreator);
@@ -45,16 +45,16 @@ interface MappingFluentSyntaxInterface
 	/**
 	 * Execute a custom closure function to the source and/or destination types before member mapping
 	 *
-	 * @param \closure $func Callback for the source/destination types
+	 * @param \Closure $func Callback for the source/destination types
 	 * @return $this
 	 */
-	public function beforeMap(\closure $func);
+	public function beforeMap(\Closure $func);
 
 	/**
 	 * Execute a custom function to the source and/or destination types after member mapping
 	 *
-	 * @param \closure $func Callback for the source/destination types
+	 * @param \Closure $func Callback for the source/destination types
 	 * @return $this
 	 */
-	public function afterMap(\closure $func);
+	public function afterMap(\Closure $func);
 }

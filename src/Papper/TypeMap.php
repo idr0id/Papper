@@ -26,11 +26,11 @@ class TypeMap
 	 */
 	private $propertyMaps = array();
 	/**
-	 * @var \closure|null
+	 * @var \Closure|null
 	 */
 	private $beforeMapFunc;
 	/**
-	 * @var \closure|null
+	 * @var \Closure|null
 	 */
 	private $afterMapFunc;
 
@@ -131,7 +131,7 @@ class TypeMap
 	/**
 	 * @param callable $func
 	 */
-	public function setBeforeMapFunc(\closure $func)
+	public function setBeforeMapFunc(\Closure $func)
 	{
 		$this->beforeMapFunc = $func;
 	}
@@ -147,7 +147,7 @@ class TypeMap
 	/**
 	 * @param callable $func
 	 */
-	public function setAfterMapFunc(\closure $func)
+	public function setAfterMapFunc(\Closure $func)
 	{
 		$this->afterMapFunc = $func;
 	}

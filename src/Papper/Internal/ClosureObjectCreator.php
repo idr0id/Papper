@@ -6,16 +6,18 @@ use Papper\ObjectCreatorInterface;
 
 class ClosureObjectCreator implements ObjectCreatorInterface
 {
-	private $objectCreatorFunc;
+	/**
+	 * @var \Closure
+	 */
+	private $closure;
 
-	public function __construct(\closure $objectCreatorFunc)
+	public function __construct(\Closure $closure)
 	{
-		$this->objectCreatorFunc = $objectCreatorFunc;
+		$this->closure = $closure;
 	}
 
 	public function create($source)
 	{
-		$closure = $this->objectCreatorFunc;
-		return $closure($source);
+		return call_user_func($this->closure, $source);
 	}
 }

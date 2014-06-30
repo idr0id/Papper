@@ -15,15 +15,18 @@ use Papper\ValueConverterInterface;
  */
 class ConvertUsing implements MemberOptionInterface
 {
+	/**
+	 * @var ValueConverterInterface
+	 */
 	private $converter;
 
 	/**
-	 * @param ValueConverterInterface|\closure $converter Converter to use
+	 * @param ValueConverterInterface|\Closure $converter Converter to use
 	 * @throws \InvalidArgumentException
 	 */
 	public function __construct($converter)
 	{
-		if (is_callable($converter)) {
+		if ($converter instanceof \Closure) {
 			$converter = new ClosureValueConverter($converter);
 		}
 		if (!$converter instanceof ValueConverterInterface) {
