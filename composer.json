@@ -1,8 +1,8 @@
 {
 	"name": "idr0id/papper",
 	"type": "library",
-	"description": "Papper is library to automatically map the properties and methods between objects.",
-	"keywords": ["mapper", "automapper", "modelmapper", "dto"],
+	"description": "Papper is PHP convention-based object to object mapper",
+	"keywords": ["automapper", "mapper", "DTO"],
 	"license": "MIT",
 	"authors": [
 		{
