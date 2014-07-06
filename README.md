@@ -11,10 +11,6 @@ Papper is PHP convention-based object to object mapper.
 
 This is library to automatically map the properties and methods between objects. Heavily inspirited by [Automapper](http://automapper.org) and [ModelMapper](http://modelmapper.org).
 
-## WARNING
-
-It's currently under development and not ready for production use yet.
-
 ## Benchmarks
 
 [**See the latest benchmarks**](https://github.com/idr0id/php-mappers-benchmarks)
@@ -24,9 +20,9 @@ It's currently under development and not ready for production use yet.
 ```json
 {
   "require": {
-    "idr0id/papper": "~1.0.0-rc"
+    "idr0id/papper": "~1.0.0"
   }
 }
 ```
 
-Through terminal: `composer require idr0id/papper:~1.0.0-rc`
+Through terminal: `composer require idr0id/papper:~1.0.0`
