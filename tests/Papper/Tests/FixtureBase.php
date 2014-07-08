@@ -1,6 +1,6 @@
 <?php
 
-namespace Papper\Tests\Fixtures;
+namespace Papper\Tests;
 
 class FixtureBase
 {

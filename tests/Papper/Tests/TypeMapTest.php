@@ -2,8 +2,6 @@
 
 namespace Papper\Tests;
 
-use Papper\Tests\ObjectMother\ObjectCreatorMother;
-use Papper\Tests\ObjectMother\PropertyMapMother;
 use Papper\TypeMap;
 
 class TypeMapTest extends TestCaseBase
@@ -11,10 +9,10 @@ class TypeMapTest extends TestCaseBase
 	public function testGetUnmappedProperty()
 	{
 		// arrange
-		$mappedPropertyMap = PropertyMapMother::createMapped();
-		$unmappedPropertyMap = PropertyMapMother::createUnmapped();
+		$mappedPropertyMap = self::createMappedProperty();
+		$unmappedPropertyMap = self::createUnmappedProperty();
 
-		$typeMap = new TypeMap('SomeType', 'AnotherType', ObjectCreatorMother::create());
+		$typeMap = new TypeMap('SomeType', 'AnotherType', \Mockery::mock('Papper\ObjectCreatorInterface'));
 		$typeMap->addPropertyMap($mappedPropertyMap);
 		$typeMap->addPropertyMap($unmappedPropertyMap);
 		// act
@@ -27,8 +25,8 @@ class TypeMapTest extends TestCaseBase
 	public function testValidationWithUnmappedPropertiesShouldPass()
 	{
 		// arrange
-		$typeMap = new TypeMap('SomeType', 'AnotherType', ObjectCreatorMother::create());
-		$typeMap->addPropertyMap(PropertyMapMother::createMapped());
+		$typeMap = new TypeMap('SomeType', 'AnotherType', \Mockery::mock('Papper\ObjectCreatorInterface'));
+		$typeMap->addPropertyMap(self::createMappedProperty());
 		// act
 		$typeMap->validate();
 	}
@@ -37,10 +35,26 @@ class TypeMapTest extends TestCaseBase
 	{
 		$this->setExpectedException('Papper\ValidationException');
 		// arrange
-		$typeMap = new TypeMap('SomeType', 'AnotherType', ObjectCreatorMother::create());
-		$typeMap->addPropertyMap(PropertyMapMother::createMapped());
-		$typeMap->addPropertyMap(PropertyMapMother::createUnmapped());
+		$typeMap = new TypeMap('SomeType', 'AnotherType', \Mockery::mock('Papper\ObjectCreatorInterface'));
+		$typeMap->addPropertyMap(self::createMappedProperty());
+		$typeMap->addPropertyMap(self::createUnmappedProperty());
 		// act
 		$typeMap->validate();
+	}
+
+	private static function createMappedProperty()
+	{
+		$mock = \Mockery::mock('Papper\PropertyMap');
+		$mock->shouldReceive('getMemberName')->andReturn('mapped');
+		$mock->shouldReceive('isMapped')->andReturn(true);
+		return $mock;
+	}
+
+	private static function createUnmappedProperty()
+	{
+		$mock = \Mockery::mock('Papper\PropertyMap');
+		$mock->shouldReceive('getMemberName')->andReturn('unmapped');
+		$mock->shouldReceive('isMapped')->andReturn(false);
+		return $mock;
 	}
 }
