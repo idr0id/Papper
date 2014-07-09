@@ -23,6 +23,10 @@ class PropertyMap
 	 * @var bool
 	 */
 	private $isIgnored = false;
+	/**
+	 * @var mixed
+	 */
+	private $nullSubtitute = null;
 
 	public function __construct(MemberSetterInterface $setter, MemberGetterInterface $getter = null)
 	{
@@ -63,6 +67,16 @@ class PropertyMap
 	public function hasValueConverter()
 	{
 		return $this->valueConverter !== null;
+	}
+
+	public function getNullSubtitute()
+	{
+		return $this->nullSubtitute;
+	}
+
+	public function setNullSubtitute($nullSubtitute)
+	{
+		$this->nullSubtitute = $nullSubtitute;
 	}
 
 	public function ignore()

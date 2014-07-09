@@ -211,6 +211,9 @@ class TypeMap
 				if ($propertyMap->hasValueConverter()) {
 					$value = $propertyMap->getValueConverter()->convert($value);
 				}
+				if ($value === null) {
+					$value = $propertyMap->getNullSubtitute();
+				}
 				$propertyMap->getDestinationSetter()->setValue($destination, $value);
 			}
 
