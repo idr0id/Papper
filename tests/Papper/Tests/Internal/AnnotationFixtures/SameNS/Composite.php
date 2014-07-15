@@ -1,11 +1,11 @@
 <?php
 
-namespace Papper\Tests\Fixtures\Annotations\SameNS;
+namespace Papper\Tests\Internal\AnnotationFixtures\SameNS;
 
-use Papper\Tests\Fixtures\Annotations\AnotherNS;
-use Papper\Tests\Fixtures\Annotations\AnotherNS\AnotherNsClass;
-use Papper\Tests\Fixtures\Annotations\SameNS\AliasedClass as ThisIsAliasedClass;
-use Papper\Tests\Fixtures\FixtureBase;
+use Papper\Tests\FixtureBase;
+use Papper\Tests\Internal\AnnotationFixtures\AnotherNS;
+use Papper\Tests\Internal\AnnotationFixtures\AnotherNS\AnotherNsClass;
+use Papper\Tests\Internal\AnnotationFixtures\SameNS\AliasedClass as ThisIsAliasedClass;
 
 class Composite extends FixtureBase
 {

@@ -23,7 +23,7 @@ class MapFrom implements MemberOptionInterface
 	private $sourceMemberGetter;
 
 	/**
-	 * @param string|\closure $sourceMember
+	 * @param string|\Closure $sourceMember
 	 * @throws \InvalidArgumentException
 	 */
 	public function __construct($sourceMember)
@@ -33,7 +33,7 @@ class MapFrom implements MemberOptionInterface
 				throw new \InvalidArgumentException('Source member path must not be empty');
 			}
 			$this->sourceMemberGetter = new PropertyAccessGetter($sourceMember);
-		} else if (is_callable($sourceMember)) {
+		} else if ($sourceMember instanceof \Closure) {
 			$this->sourceMemberGetter = new ClosureAccessGetter($sourceMember);
 		} else {
 			throw new \InvalidArgumentException('Source member should be string (source member path) or closure');

@@ -3,11 +3,13 @@
 namespace Papper\Tests\Internal;
 
 use Papper\Internal\AnnotationTypeReader;
-use Papper\Tests\Fixtures\Annotations\AnotherNS\AliasedClass as AliasedPathClass;
-use Papper\Tests\Fixtures\Annotations\AnotherNS\AnotherNsClass;
-use Papper\Tests\Fixtures\Annotations\SameNS\AliasedClass;
-use Papper\Tests\Fixtures\Annotations\SameNS\Composite;
-use Papper\Tests\Fixtures\Annotations\SameNS\SameNsClass;
+use Papper\Tests\Internal\AnnotationFixtures\AnotherNS\AliasedClass as AliasedPathClass;
+use Papper\Tests\Internal\AnnotationFixtures\AnotherNS\AnotherNsClass;
+use Papper\Tests\Internal\AnnotationFixtures\SameNS\AliasedClass;
+use Papper\Tests\Internal\AnnotationFixtures\SameNS\Composite;
+use Papper\Tests\Internal\AnnotationFixtures\SameNS\SameNsClass;
+
+include 'AnnotationFixtures/PapperGlobalAnnotationClass.php';
 
 class AnnotationTypeReaderTest extends \PHPUnit_Framework_TestCase
 {

@@ -33,7 +33,7 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 	 */
 	public function constructUsing($objectCreator)
 	{
-		if (is_callable($objectCreator)) {
+		if ($objectCreator instanceof \Closure) {
 			$objectCreator = new ClosureObjectCreator($objectCreator);
 		}
 		if (!$objectCreator instanceof ObjectCreatorInterface) {
@@ -100,7 +100,7 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 	/**
 	 * @inheritdoc
 	 */
-	public function beforeMap(\closure $func)
+	public function beforeMap(\Closure $func)
 	{
 		$this->typeMap->setBeforeMapFunc($func);
 		return $this;
@@ -109,7 +109,7 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 	/**
 	 * @inheritdoc
 	 */
-	public function afterMap(\closure $func)
+	public function afterMap(\Closure $func)
 	{
 		$this->typeMap->setAfterMapFunc($func);
 		return $this;

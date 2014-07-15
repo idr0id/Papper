@@ -1,6 +1,6 @@
 <?php
 
-use Papper\Tests\Fixtures\FixtureBase;
+use Papper\Tests\FixtureBase;
 
 class PapperGlobalAnnotationClass extends FixtureBase
 {
