@@ -84,12 +84,12 @@ class Engine
 
 		try {
 			$typeMap->validate();
-
 			$mapFunc = $typeMap->getMapFunc();
 
-			return (is_array($context->getSource()))
-				? array_map($mapFunc, $context->getSource())
-				: $mapFunc($context->getSource(), $context->getDestination());
+			$destination = is_array($context->getSource())
+				? $this->mapCollection($context, $mapFunc)
+				: $this->mapObject($context, $mapFunc);
+			return $destination;
 		} catch (\Exception $e) {
 			$message = sprintf("Error while mapping %s -> %s", $typeMap->getSourceType(), $typeMap->getDestinationType());
 			throw new MappingException($message, 0, $e);
@@ -124,5 +124,19 @@ class Engine
 	public function reset()
 	{
 		$this->config = new Configuration();
+	}
+
+	private function mapCollection(MappingContext $context, \Closure $mapFunc)
+	{
+		$destination = array();
+		foreach ($context->getSource() as $source) {
+			$destination[] = $mapFunc($source, $context->getDestination());
+		}
+		return $destination;
+	}
+
+	private function mapObject(MappingContext $context, \Closure $mapFunc)
+	{
+		return $mapFunc($context->getSource(), $context->getDestination());
 	}
 }
