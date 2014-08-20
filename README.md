@@ -25,4 +25,4 @@ This is library to automatically map the properties and methods between objects.
 }
 ```
 
-Through terminal: `composer require idr0id/papper:~1.0.0`
+Through terminal: `composer require idr0id/papper:~1.0`
