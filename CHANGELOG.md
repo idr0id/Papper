@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+* 1.1.1 (2014-09-29)
+
+ * Change naming conventions namespace
+ * Improve exception messages
+ * Fix to avoid warning in array_map when collection mapping throws exception
+
 * 1.1.0 (2014-07-15)
 
  * Add null substitute for property mappings
