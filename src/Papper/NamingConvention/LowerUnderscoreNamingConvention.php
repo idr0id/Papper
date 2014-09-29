@@ -1,6 +1,6 @@
 <?php
 
-namespace Papper\Internal\Convention;
+namespace Papper\NamingConvention;
 
 use Papper\NamingConventionsInterface;
 

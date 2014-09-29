@@ -2,8 +2,8 @@
 
 namespace Papper\Internal;
 
-use Papper\Internal\Convention\PascalCaseNamingConvention;
 use Papper\MappingOptionsInterface;
+use Papper\NamingConvention\PascalCaseNamingConvention;
 use Papper\NamingConventionsInterface;
 
 class MappingOptions implements MappingOptionsInterface

@@ -37,10 +37,10 @@ class MappingContext
 	public function setSource($source, $sourceType)
 	{
 		if (!(is_object($source) || is_array($source))) {
-			throw new MappingException('Source must be object or array instead of ' . gettype($source));
+			throw new MappingException('Source type must be object or array instead of ' . gettype($source));
 		}
 		if (is_array($source) && empty($sourceType)) {
-			throw new MappingException('Source type must explicitly specified for mapping of collection');
+			throw new MappingException('Source type must explicitly specified for collection mapping');
 		}
 		if (is_object($source) && empty($sourceType)) {
 			$sourceType = get_class($source);
@@ -52,7 +52,7 @@ class MappingContext
 	public function setDestination($destination, $destinationType)
 	{
 		if ($destination !== null && is_array($this->source)) {
-			throw new NotSupportedException('Mapping collection to exists destination is no supported');
+			throw new NotSupportedException('Collection mapping to existing destination is not supported');
 		}
 		if (is_object($destination) && empty($destinationType)) {
 			$destinationType = get_class($destination);
