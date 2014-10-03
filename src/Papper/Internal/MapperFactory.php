@@ -66,27 +66,25 @@ class MapperFactory
 		$mappingTemplate = $this->getMappingTemplate();
 		$mapping = '';
 		foreach ($typeMap->getPropertyMaps() as $index => $propertyMap) {
-			$mapping .= $this->render($mappingTemplate, array(
-				'{{GetValue}}' => $this->render($propertyMap->getSourceGetter()->createNativeCodeTemplate(), array(
-					'{{PropertyMap}}' => '$this->propertyMaps["' . $index . '"]',
-				)),
-				'{{ValueConverter}}' => $propertyMap->hasValueConverter() ? '$value = $this->propertyMaps["' . $index . '"]->getValueConverter()->convert($value)' : '',
-				'{{SetValue}}' => $this->render($propertyMap->getDestinationSetter()->createNativeCodeTemplate(), array(
-					'{{PropertyMap}}' => '$this->propertyMaps["' . $index . '"]',
-				)),
-				'{{PropertyMap}}' => '$this->propertyMaps["' . $index . '"]',
+			$mappingTmp = $this->render($mappingTemplate, array(
+				'{{GetValue}}' => $propertyMap->getSourceGetter()->createNativeCodeTemplate(),
+				'{{ValueConverter}}' => $propertyMap->hasValueConverter() ? '$value = {{PropertyMap}}->getValueConverter()->convert($value)' : '',
+				'{{SetValue}}' => $propertyMap->getDestinationSetter()->createNativeCodeTemplate(),
 				'{{FromName}}' => $propertyMap->getSourceGetter()->getName(),
 				'{{ToName}}' => $propertyMap->getDestinationSetter()->getName(),
+				'{{NullSubtitute}}' => $propertyMap->getNullSubtitute() !== null ? 'if ($value === null) $value = {{PropertyMap}}->getNullSubtitute()' : '',
 			));
+
+			$mapping .= $this->render($mappingTmp, array('{{PropertyMap}}' => '$this->propertyMaps["' . $index . '"]'));
 		}
 
 		return $this->render($template, array(
 			'{{ClassName}}' => $this->generateClassName($typeMap),
-			'{{BeforeMapFunc}}' => $typeMap->hasBeforeMapFunc() ? 'call_user_func($this->beforeMapFunc, array($source, $destination))' : '',
 			'{{Mapping}}' => $mapping,
-			'{{AfterMapFunc}}' => $typeMap->hasAfterMapFunc() ? 'call_user_func($this->beforeMapFunc, array($source, $destination))' : '',
 			'{{SourceType}}' => $typeMap->getSourceType(),
 			'{{DestinationType}}' => $typeMap->getDestinationType(),
+			'{{BeforeMapFunc}}' => $typeMap->hasBeforeMapFunc() ? 'call_user_func($this->beforeMapFunc, array($source, $destination))' : '',
+			'{{AfterMapFunc}}' => $typeMap->hasAfterMapFunc() ? 'call_user_func($this->beforeMapFunc, array($source, $destination))' : '',
 		));
 	}
 
@@ -135,13 +133,11 @@ TEMPLATE;
 	private function getMappingTemplate()
 	{
 		return <<<'MAPPING'
-			// {{FromName}} => {{ToName}}
-			$value = {{GetValue}};
-			{{ValueConverter}};
-			if ($value === null) {
-				$value = {{PropertyMap}}->getNullSubtitute();
-			}
-			{{SetValue}};
+		// {{FromName}} => {{ToName}}
+		$value = {{GetValue}};
+		{{ValueConverter}};
+		{{NullSubtitute}};
+		{{SetValue}};
 
 MAPPING;
 	}
