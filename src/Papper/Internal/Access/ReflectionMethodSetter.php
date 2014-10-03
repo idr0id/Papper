@@ -22,4 +22,9 @@ class ReflectionMethodSetter implements MemberSetterInterface
 	{
 		$this->reflector->invokeArgs($object, array($value));
 	}
+
+	public function createNativeCodeTemplate()
+	{
+		return sprintf('$destination->%s($value)', $this->reflector->getName());
+	}
 }

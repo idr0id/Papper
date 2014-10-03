@@ -22,4 +22,9 @@ class ReflectionPropertyGetter implements MemberGetterInterface
 	{
 		return $this->reflector->getValue($object);
 	}
+
+	public function createNativeCodeTemplate()
+	{
+		return sprintf('$source->%s', $this->reflector->getName());
+	}
 }

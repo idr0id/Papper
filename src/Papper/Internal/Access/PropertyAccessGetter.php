@@ -26,4 +26,9 @@ class PropertyAccessGetter implements MemberGetterInterface
 	{
 		return PropertyAccess::createPropertyAccessor()->getValue($object, $this->propertyPath);
 	}
+
+	public function createNativeCodeTemplate()
+	{
+		return '{{PropertyMap}}->getSourceGetter()->getValue($source)';
+	}
 }

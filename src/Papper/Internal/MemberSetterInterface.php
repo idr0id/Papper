@@ -12,4 +12,6 @@ interface MemberSetterInterface
 	public function getName();
 
 	public function setValue($object, $value);
+
+	public function createNativeCodeTemplate();
 }

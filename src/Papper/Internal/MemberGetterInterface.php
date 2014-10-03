@@ -12,4 +12,6 @@ interface MemberGetterInterface
 	public function getName();
 
 	public function getValue($object);
+
+	public function createNativeCodeTemplate();
 }

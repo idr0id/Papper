@@ -129,6 +129,14 @@ class TypeMap
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function hasBeforeMapFunc()
+	{
+		return is_callable($this->beforeMapFunc);
+	}
+
+	/**
 	 * @param callable $func
 	 */
 	public function setBeforeMapFunc(\Closure $func)
@@ -142,6 +150,14 @@ class TypeMap
 	public function getAfterMapFunc()
 	{
 		return $this->afterMapFunc;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function hasAfterMapFunc()
+	{
+		return is_callable($this->afterMapFunc);
 	}
 
 	/**

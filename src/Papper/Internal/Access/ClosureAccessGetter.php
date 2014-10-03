@@ -22,4 +22,9 @@ class ClosureAccessGetter implements MemberGetterInterface
 	{
 		return call_user_func($this->closure, $object);
 	}
+
+	public function createNativeCodeTemplate()
+	{
+		return '$propertyMap->getSourceGetter()->getValue($source)';
+	}
 }

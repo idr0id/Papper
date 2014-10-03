@@ -26,4 +26,9 @@ class PropertyAccessSetter implements MemberSetterInterface
 	{
 		PropertyAccess::createPropertyAccessor()->setValue($object, $this->propertyPath, $value);
 	}
+
+	public function createNativeCodeTemplate()
+	{
+		return '{{PropertyMap}}->getDestinationSetter()->setValue($destination, $value)';
+	}
 }

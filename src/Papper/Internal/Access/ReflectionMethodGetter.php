@@ -22,4 +22,9 @@ class ReflectionMethodGetter implements MemberGetterInterface
 	{
 		return $this->reflector->invoke($object);
 	}
+
+	public function createNativeCodeTemplate()
+	{
+		return sprintf('$source->%s()', $this->reflector->getName());
+	}
 }

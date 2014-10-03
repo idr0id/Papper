@@ -86,6 +86,11 @@ class Papper
 		return $instance ?: $instance = new Engine();
 	}
 
+	public static function enableCaching($cachePath)
+	{
+		self::engine()->enableCaching($cachePath);
+	}
+
 	//<editor-fold desc="Singleton/Static">
 	private function __construct()
 	{

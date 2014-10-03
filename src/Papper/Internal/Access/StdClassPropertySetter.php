@@ -20,4 +20,9 @@ class StdClassPropertySetter implements MemberSetterInterface
 	{
 		$object->{$this->propertyName} = $value;
 	}
+
+	public function createNativeCodeTemplate()
+	{
+		return sprintf('$destination->%s = $value', $this->propertyName);
+	}
 }

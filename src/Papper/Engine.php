@@ -34,6 +34,11 @@ class Engine
 		return $this->config->getMappingOptions();
 	}
 
+	public function enableCaching($cachePath)
+	{
+		$this->config->getMapperFactory()->enableCaching($cachePath);
+	}
+
 	/**
 	 * Creates a TypeMap for the source's type and destination's type.
 	 *

@@ -22,4 +22,9 @@ class ReflectionPropertySetter implements MemberSetterInterface
 	{
 		$this->reflector->setValue($object, $value);
 	}
+
+	public function createNativeCodeTemplate()
+	{
+		return sprintf('$destination->%s = $value', $this->reflector->getName());
+	}
 }
