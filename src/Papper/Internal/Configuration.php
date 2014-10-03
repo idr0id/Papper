@@ -24,16 +24,26 @@ class Configuration
 	 * @var MappingOptionsInterface
 	 */
 	private $mappingOptions;
+	/**
+	 * @var MapperFactory
+	 */
+	private $mapperFactory;
 
 	public function __construct()
 	{
 		$this->typeMapFactory = new TypeMapFactory();
 		$this->mappingOptions = new MappingOptions();
+		$this->mapperFactory = new MapperFactory();
 	}
 
 	public function getMappingOptions()
 	{
 		return $this->mappingOptions;
+	}
+
+	public function getMapperFactory()
+	{
+		return $this->mapperFactory;
 	}
 
 	public function findTypeMap($sourceType, $destinationType)

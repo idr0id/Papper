@@ -4,6 +4,7 @@ namespace Papper;
 
 use Papper\Internal\Configuration;
 use Papper\Internal\ExecuteMappingFluentSyntax;
+use Papper\Internal\MapperInterface;
 use Papper\Internal\MappingFluentSyntax;
 
 /**
@@ -84,11 +85,12 @@ class Engine
 
 		try {
 			$typeMap->validate();
-			$mapFunc = $typeMap->getMapFunc();
+
+			$mapper = $this->config->getMapperFactory()->create($typeMap);
 
 			$destination = is_array($context->getSource())
-				? $this->mapCollection($context, $mapFunc)
-				: $this->mapObject($context, $mapFunc);
+				? $this->mapCollection($context, $mapper)
+				: $this->mapObject($context, $mapper);
 			return $destination;
 		} catch (\Exception $e) {
 			$message = sprintf("Error while mapping %s -> %s", $typeMap->getSourceType(), $typeMap->getDestinationType());
@@ -126,17 +128,17 @@ class Engine
 		$this->config = new Configuration();
 	}
 
-	private function mapCollection(MappingContext $context, \Closure $mapFunc)
+	private function mapCollection(MappingContext $context, MapperInterface $mapper)
 	{
 		$destination = array();
 		foreach ($context->getSource() as $source) {
-			$destination[] = $mapFunc($source, $context->getDestination());
+			$destination[] = $mapper->map($source, $context->getDestination());
 		}
 		return $destination;
 	}
 
-	private function mapObject(MappingContext $context, \Closure $mapFunc)
+	private function mapObject(MappingContext $context, MapperInterface $mapper)
 	{
-		return $mapFunc($context->getSource(), $context->getDestination());
+		return $mapper->map($context->getSource(), $context->getDestination());
 	}
 }
