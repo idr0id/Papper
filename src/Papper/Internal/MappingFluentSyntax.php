@@ -95,6 +95,7 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 		foreach ($this->typeMap->getUnmappedPropertyMaps() as $propertyMap) {
 			$propertyMap->ignore();
 		}
+		return $this;
 	}
 
 	/**
