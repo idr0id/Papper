@@ -38,6 +38,9 @@ class Configuration
 
 	public function findTypeMap($sourceType, $destinationType)
 	{
+		$sourceType = ltrim($sourceType, '\\');
+		$destinationType = ltrim($destinationType, '\\');
+
 		$key = $this->computeTypePairHash($sourceType, $destinationType);
 		return isset($this->typeMaps[$key])
 			? $this->typeMaps[$key]
@@ -51,6 +54,6 @@ class Configuration
 
 	private function computeTypePairHash($sourceType, $destinationType)
 	{
-		return ltrim($sourceType, '\\') . '#' . ltrim($destinationType, '\\');
+		return $sourceType . '#' . $destinationType;
 	}
 }
