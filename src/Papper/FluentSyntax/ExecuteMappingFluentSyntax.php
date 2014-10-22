@@ -1,14 +1,18 @@
 <?php
 
-namespace Papper\Internal;
+namespace Papper\FluentSyntax;
 
 use Papper\Engine;
-use Papper\ExecuteMappingFluentSyntaxInterface;
 use Papper\MappingContext;
 use Papper\MappingException;
 use Papper\NotSupportedException;
 
-class ExecuteMappingFluentSyntax implements ExecuteMappingFluentSyntaxInterface
+/**
+ * Mapping executing options
+ *
+ * @author Vladimir Komissarov <dr0id@dr0id.ru>
+ */
+class ExecuteMappingFluentSyntax
 {
 	private $context;
 	private $engine;

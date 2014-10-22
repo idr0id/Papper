@@ -2,9 +2,9 @@
 
 namespace Papper;
 
+use Papper\FluentSyntax\ExecuteMappingFluentSyntax;
+use Papper\FluentSyntax\MappingFluentSyntax;
 use Papper\Internal\Configuration;
-use Papper\Internal\ExecuteMappingFluentSyntax;
-use Papper\Internal\MappingFluentSyntax;
 
 /**
  * Papper mapping engine
@@ -39,7 +39,7 @@ class Engine
 	 * @param string $sourceType Source type
 	 * @param string $destinationType Destination type
 	 * @throws ClassNotFoundException
-	 * @return MappingFluentSyntaxInterface
+	 * @return MappingFluentSyntax
 	 */
 	public function createMap($sourceType, $destinationType)
 	{
@@ -63,7 +63,7 @@ class Engine
 	 * @param object|object[] $source Source object or collection to map from
 	 * @param string|null $sourceType Source object type
 	 * @throws MappingException
-	 * @return ExecuteMappingFluentSyntaxInterface
+	 * @return ExecuteMappingFluentSyntax
 	 */
 	public function map($source, $sourceType = null)
 	{

@@ -2,6 +2,8 @@
 
 namespace Papper;
 
+use Papper\FluentSyntax\MappingFluentSyntax;
+
 class MappingConfigurationContext
 {
 	private $engine;
@@ -17,7 +19,7 @@ class MappingConfigurationContext
 	 * @param string $sourceType Source type
 	 * @param string $destinationType Destination type
 	 * @throws ClassNotFoundException
-	 * @return MappingFluentSyntaxInterface
+	 * @return MappingFluentSyntax
 	 */
 	public function createMap($sourceType, $destinationType)
 	{

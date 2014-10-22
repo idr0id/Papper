@@ -2,6 +2,9 @@
 
 namespace Papper;
 
+use Papper\FluentSyntax\ExecuteMappingFluentSyntax;
+use Papper\FluentSyntax\MappingFluentSyntax;
+
 /**
  * Main entry point for Papper, for both creating maps and performing maps.
  * Static proxy to Engine.
@@ -15,7 +18,7 @@ class Papper
 	 *
 	 * @param string $sourceType Source type
 	 * @param string $destinationType Destination type
-	 * @return MappingFluentSyntaxInterface
+	 * @return MappingFluentSyntax
 	 */
 	public static function createMap($sourceType, $destinationType)
 	{
@@ -39,7 +42,7 @@ class Papper
 	 * @param object|object[] $source Source object or collection to map from
 	 * @param string|null $sourceType Source object type
 	 * @throws MappingException
-	 * @return ExecuteMappingFluentSyntaxInterface
+	 * @return ExecuteMappingFluentSyntax
 	 */
 	public static function map($source, $sourceType = null)
 	{

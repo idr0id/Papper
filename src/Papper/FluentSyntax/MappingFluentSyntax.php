@@ -1,10 +1,10 @@
 <?php
 
-namespace Papper\Internal;
+namespace Papper\FluentSyntax;
 
 use Papper\Internal\Access\PropertyAccessSetter;
 use Papper\Internal\Access\StdClassPropertySetter;
-use Papper\MappingFluentSyntaxInterface;
+use Papper\Internal\ClosureObjectCreator;
 use Papper\MemberOptionInterface;
 use Papper\ObjectCreatorInterface;
 use Papper\PapperConfigurationException;
@@ -16,7 +16,7 @@ use Papper\TypeMap;
  *
  * @author Vladimir Komissarov <dr0id@dr0id.ru>
  */
-class MappingFluentSyntax implements MappingFluentSyntaxInterface
+class MappingFluentSyntax
 {
 	/**
 	 * @var TypeMap
@@ -29,7 +29,11 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * Supply a custom instantiation function for the destination type
+	 *
+	 * @param ObjectCreatorInterface|\Closure $objectCreator Callback to create the destination type given the source object
+	 * @throws PapperConfigurationException
+	 * @return MappingFluentSyntax
 	 */
 	public function constructUsing($objectCreator)
 	{
@@ -43,7 +47,12 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * Customize configuration for individual member
+	 *
+	 * @param string $name Destination member name
+	 * @param MemberOptionInterface|MemberOptionInterface[] $memberOptions Member option
+	 * @throws PapperConfigurationException
+	 * @return MappingFluentSyntax
 	 */
 	public function forMember($name, $memberOptions)
 	{
@@ -62,7 +71,12 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * Create configuration for individual dynamic member
+	 *
+	 * @param string $name Destination member name
+	 * @param MemberOptionInterface|MemberOptionInterface[] $memberOptions Member option
+	 * @throws PapperConfigurationException
+	 * @return MappingFluentSyntax
 	 */
 	public function forDynamicMember($name, $memberOptions = null)
 	{
@@ -88,7 +102,9 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * Ignores all remaining unmapped members that do not exist on the destination.
+	 *
+	 * @return $this
 	 */
 	public function ignoreAllNonExisting()
 	{
@@ -99,7 +115,10 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * Execute a custom closure function to the source and/or destination types before member mapping
+	 *
+	 * @param \Closure $func Callback for the source/destination types
+	 * @return $this
 	 */
 	public function beforeMap(\Closure $func)
 	{
@@ -108,7 +127,10 @@ class MappingFluentSyntax implements MappingFluentSyntaxInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * Execute a custom function to the source and/or destination types after member mapping
+	 *
+	 * @param \Closure $func Callback for the source/destination types
+	 * @return $this
 	 */
 	public function afterMap(\Closure $func)
 	{
