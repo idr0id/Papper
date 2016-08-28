@@ -29,7 +29,7 @@ class MappingConfiguration implements MappingConfigurationInterface
 {
 	public function configure(MappingConfigurationContext $context)
 	{
-		$context->createMap('Papper\Examples\Configure\User', 'Papper\Examples\Configure\UserDTO')
+		$context->createMap('Papper\Examples\Configuring\User', 'Papper\Examples\Configuring\UserDTO')
 			->forMember('age', new Ignore());
 	}
 }
@@ -37,14 +37,14 @@ class MappingConfiguration implements MappingConfigurationInterface
 Papper::configureMapping(new MappingConfiguration());
 
 /** @var UserDTO $userDTO */
-$userDTO = Papper::map(new User('John Smith'))->toType('Papper\Examples\Configure\UserDTO');
+$userDTO = Papper::map(new User('John Smith'))->toType('Papper\Examples\Configuring\UserDTO');
 
 print_r($userDTO);
 
 /*
  * The above example will output:
  *
- * Papper\Examples\Configure\UserDTO Object
+ * Papper\Examples\Configuring\UserDTO Object
  * (
  *     [name] => John Smith
  *     [age] => default value of ignored member
